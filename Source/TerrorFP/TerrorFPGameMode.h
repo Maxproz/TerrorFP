@@ -10,6 +10,18 @@ class ATerrorFPGameMode : public AGameModeBase
 
 public:
 	ATerrorFPGameMode();
+    
+    // Function with no parameters
+    UFUNCTION(Exec, Category = "ExecFunctions")
+    void DoSomething();
+    
+    // Function with one parameter
+    UFUNCTION(Exec, Category = "ExecFunctions")
+    void DoSomethingElse(float param);
+    
+    // Function with two parameters
+    UFUNCTION(Exec, Category = "ExecFunctions")
+    void DoubleParamFunction(float param1, int32 param2);
 };
 
 
