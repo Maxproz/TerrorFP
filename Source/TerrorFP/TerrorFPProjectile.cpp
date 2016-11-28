@@ -27,8 +27,20 @@ ATerrorFPProjectile::ATerrorFPProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
+//    RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
+//    RadialForceComp->ImpulseStrength = 28084;
+//    RadialForceComp->DestructibleDamage = 1.f;
+    
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+    
+//    StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+//    StaticMeshComp->SetupAttachment(CollisionComp);
+//    
+//    CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ATerrorFPProjectile::OnOverlapBegin);
+//    CollisionComp->OnComponentEndOverlap.AddDynamic(this, &ATerrorFPProjectile::OnOverlapEnd);
+    
+    
 }
 
 void ATerrorFPProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -41,3 +53,14 @@ void ATerrorFPProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 		Destroy();
 	}
 }
+
+//void ATerrorFPProjectile::OnOverlapBegin(class AActor *OtherActor, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+//{
+//    
+//}
+//
+//void ATerrorFPProjectile::OnOverlapEnd(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+//{
+//    
+//}
+

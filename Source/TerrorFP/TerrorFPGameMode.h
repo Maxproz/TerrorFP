@@ -11,6 +11,9 @@ class ATerrorFPGameMode : public AGameModeBase
 public:
 	ATerrorFPGameMode();
     
+    virtual void BeginPlay() override;
+    
+    /************* CUSTOM CONSOLE COMMANDS ************/
     // Function with no parameters
     UFUNCTION(Exec, Category = "ExecFunctions")
     void DoSomething();
@@ -22,6 +25,33 @@ public:
     // Function with two parameters
     UFUNCTION(Exec, Category = "ExecFunctions")
     void DoubleParamFunction(float param1, int32 param2);
+    /************* CUSTOM CONSOLE COMMANDS ************/
+    
+    
+private:
+    /************* LEVEL STREAMING CODE ************/
+    // Contains all the available transforms of LevelMovePointActors.
+    TArray<FTransform> Transforms;
+    
+    // Map name to spawn
+    FString MapName;
+    
+    // The desired transform of our map
+    FTransform MapTransform;
+    
+    // Spawns the desired map based on the MapName and the MapTransform
+    UFUNCTION()
+    void SpawnMap();
+    
+public:
+    /** Moves or spawns a map in the BaseMap.
+    * @param MapName - the name of the map we want to move
+    * @param Position - the index of the Transforms array we want to use
+    */
+    UFUNCTION(Exec, Category = "LevelStreaming")
+    void MoveMap(FString MapName, int32 Position);
+    
+    /************* LEVEL STREAMING CODE ************/
 };
 
 

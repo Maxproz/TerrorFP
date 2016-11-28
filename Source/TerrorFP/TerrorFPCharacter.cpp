@@ -185,7 +185,8 @@ void ATerrorFPCharacter::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				// TODO: old remove World->SpawnActor<ATerrorFPProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				// TODO: old remove
+                World->SpawnActor<ATerrorFPProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			}
 		}
 	}
