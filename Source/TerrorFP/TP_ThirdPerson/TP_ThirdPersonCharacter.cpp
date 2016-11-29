@@ -7,8 +7,8 @@
 //////////////////////////////////////////////////////////////////////////
 // ATP_ThirdPersonCharacter
 
-const int32 PlayerHungerDecay = 25;
-const int32 PlayerCountdownToNextHungerTick = 10;
+const int32 PlayerHungerDecay = 5;
+const int32 PlayerCountdownToNextHungerTick = 1;
 
 ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 {
@@ -58,6 +58,9 @@ void ATP_ThirdPersonCharacter::BeginPlay()
 {
     Super::BeginPlay();
     
+    // Make use this later in-order to not auto select the BP class?
+    //YourCustomWidgetUIClass = LoadClass<YourCustomWidget>(..., TEXT(path_to_your_widget_in_content_browser), ...);
+    
     WidgetInstance = CreateWidget<USurvivalHUDWidget>(GetWorld(), WidgetTemplate);
     
     if (WidgetInstance)
@@ -71,16 +74,16 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
 {
     Super::Tick( DeltaTime );
     
-    FLatentActionInfo LatentActionInfo;
-    LatentActionInfo.CallbackTarget = this;
-    LatentActionInfo.ExecutionFunction = "SetPlayerHunger";
-    LatentActionInfo.UUID = 123;
-    LatentActionInfo.Linkage = 0;
+    FLatentActionInfo LatentActionInfoHunger;
+    LatentActionInfoHunger.CallbackTarget = this;
+    LatentActionInfoHunger.ExecutionFunction = "SetPlayerHunger";
+    LatentActionInfoHunger.UUID = 123;
+    LatentActionInfoHunger.Linkage = 0;
     
     
     if (PlayerHunger > 1)
     {
-        UKismetSystemLibrary::Delay(this, PlayerCountdownToNextHungerTick, LatentActionInfo);
+        UKismetSystemLibrary::Delay(this, PlayerCountdownToNextHungerTick, LatentActionInfoHunger);
     }
     else
     {
@@ -90,7 +93,6 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
             UGameplayStatics::SetGamePaused(this, true);
         }
     }
-    
     
 //    ElapsedTimeMini += DeltaTime;
 //    ElapsedTimeFull += DeltaTime;
@@ -135,6 +137,56 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
         //enable tick on the actor
         SetActorTickEnabled(true);
      */
+    
+    // TODO: Code to make sure stamina doesn't go above 100 probably filter out into a function
+    if (PlayerStamina > 100)
+    {
+        PlayerStamina = 100;
+    }
+    
+    // TODO: Sequence node said the above stuff runs first, then this stuff below.
+    FLatentActionInfo LatentActionInfoSprintOn;
+    LatentActionInfoSprintOn.CallbackTarget = this;
+    LatentActionInfoSprintOn.ExecutionFunction = "AdjustSprintAmount";
+    LatentActionInfoSprintOn.UUID = 1234;
+    LatentActionInfoSprintOn.Linkage = 0;
+    
+    FLatentActionInfo LatentActionInfoSprintOff;
+    LatentActionInfoSprintOff.CallbackTarget = this;
+    LatentActionInfoSprintOff.ExecutionFunction = "NotSprintingRecovery";
+    LatentActionInfoSprintOff.UUID = 1235;
+    LatentActionInfoSprintOff.Linkage = 0;
+    
+    if (bIsSprintOn)
+    {
+        UKismetSystemLibrary::Delay(this, 0.2, LatentActionInfoSprintOn);
+    }
+    else
+    {
+        UKismetSystemLibrary::Delay(this, 0.2, LatentActionInfoSprintOff);
+    }
+}
+
+void ATP_ThirdPersonCharacter::AdjustSprintAmount()
+{
+    if (PlayerStamina <= 0)
+    {
+        bIsSprintOn = false;
+        GetCharacterMovement()->MaxWalkSpeed = 600;
+        return;
+    }
+    else
+    {
+        PlayerStamina = PlayerStamina - 1;
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::FromInt(PlayerStamina));
+        return;
+    }
+}
+
+void ATP_ThirdPersonCharacter::NotSprintingRecovery()
+{
+    PlayerStamina = PlayerStamina + 1;
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::FromInt(PlayerStamina));
 }
 
 void ATP_ThirdPersonCharacter::SetPlayerHunger()
@@ -182,6 +234,10 @@ void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ATP_ThirdPersonCharacter::OnResetVR);
+    
+    // Sprint Functionality
+    PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ATP_ThirdPersonCharacter::Sprinting);
+    PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ATP_ThirdPersonCharacter::StopSprinting);
 }
 
 
@@ -239,4 +295,20 @@ void ATP_ThirdPersonCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void ATP_ThirdPersonCharacter::Sprinting()
+{
+    if (PlayerStamina >= 1)
+    {
+        bIsSprintOn = true;
+        // Default MaxWalkSpeed for TP_Template is 600, grant double bonus for sprint.
+        GetCharacterMovement()->MaxWalkSpeed = 1200;
+    }
+}
+
+void ATP_ThirdPersonCharacter::StopSprinting()
+{
+    bIsSprintOn = false;
+    GetCharacterMovement()->MaxWalkSpeed = 600;
 }

@@ -40,6 +40,7 @@ public:
     // Called every frame
     virtual void Tick( float DeltaSeconds ) override;
     
+    // TODO: Should this be public?
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hunger System")
     int32 PlayerHunger = 100;
     
@@ -53,17 +54,37 @@ public:
     UFUNCTION()
     int32 GetPlayerHunger() { return PlayerHunger; }
     
+    // TODO: Should this be public?
     // Widget to create and add to viewport on beginplay
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     TSubclassOf<USurvivalHUDWidget> WidgetTemplate;
     
+    // TODO: Should this be public?
     USurvivalHUDWidget* WidgetInstance;
     
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
     
+    UFUNCTION()
+    void Sprinting();
+    
+    UFUNCTION()
+    void StopSprinting();
+    
+    UFUNCTION()
+    void AdjustSprintAmount();
+    
+    UFUNCTION()
+    void NotSprintingRecovery();
+    
 protected:
-
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sprint System")
+    bool bIsSprintOn = false;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sprint System")
+    int32 PlayerStamina = 100;
+    
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 

@@ -6,6 +6,6 @@ public class TerrorFP : ModuleRules
 {
 	public TerrorFP(TargetInfo Target)
 	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "InputCore", "UMG", "Slate", "SlateCore" });
 	}
 }

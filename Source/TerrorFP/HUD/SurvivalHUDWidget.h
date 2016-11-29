@@ -13,7 +13,9 @@ class TERRORFP_API USurvivalHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
 	
-	
+//    UFUNCTION(BlueprintPure, Category = "HUD")
+//	float GetPercentHunger();
 	
 };
