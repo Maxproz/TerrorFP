@@ -117,6 +117,13 @@ void AMinorHungerPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAc
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue,
                     "Player Hunger set to " + FString::FromInt(Char->GetPlayerHunger()));
     }
+    
+    // Maybe this will prevent us from getting the spam increase to max hunger?
+    K2_DestroyActor();
+    
+    
+    // TODO: Call a function here to spawn emitter and sound effect.
+    
 }
 
 void AMinorHungerPickup::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)

@@ -1,6 +1,7 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
+#include "../HUD/SurvivalHUDWidget.h"
 #include "TP_ThirdPersonCharacter.generated.h"
 
 UCLASS(config=Game)
@@ -51,6 +52,15 @@ public:
     
     UFUNCTION()
     int32 GetPlayerHunger() { return PlayerHunger; }
+    
+    // Widget to create and add to viewport on beginplay
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSubclassOf<USurvivalHUDWidget> WidgetTemplate;
+    
+    USurvivalHUDWidget* WidgetInstance;
+    
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
     
 protected:
 

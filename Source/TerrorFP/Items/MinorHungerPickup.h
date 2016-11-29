@@ -40,7 +40,6 @@ public:
     
     
     // Overlap on box collider stuff
-    // TODO: Figure out how to get this to run once and not spam fill the hunger bar to max
     UPROPERTY(BlueprintAssignable, Category = "Collision" )
     FComponentBeginOverlapSignature OnComponentBeginOverlap;
     

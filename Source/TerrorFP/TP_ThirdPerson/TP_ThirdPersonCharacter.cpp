@@ -16,10 +16,10 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
     PrimaryActorTick.bStartWithTickEnabled = true;
 	
     // Set timer variables for hunger functionality
-    ElapsedTimeMini = 0.f;
-    ElapsedTimeFull = 0.f;
-    Period = 5.f;
-    TimerEnd = 5.f;
+//    ElapsedTimeMini = 0.f;
+//    ElapsedTimeFull = 0.f;
+//    Period = 5.f;
+//    TimerEnd = 5.f;
     
     // Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -52,6 +52,18 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+}
+
+void ATP_ThirdPersonCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+    
+    WidgetInstance = CreateWidget<USurvivalHUDWidget>(GetWorld(), WidgetTemplate);
+    
+    if (WidgetInstance)
+    {
+        WidgetInstance->AddToViewport();
+    }
 }
 
 // Called every frame
