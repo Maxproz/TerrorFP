@@ -15,13 +15,16 @@ class ATP_ThirdPersonCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
     
     // member variables
+    /* Can re-enable these if I ever end up using the other type of timer.
     float ElapsedTimeMini;
     float ElapsedTimeFull;
     float Period;
     float TimerEnd;
-    
+    */
+     
 public:
 	ATP_ThirdPersonCharacter();
 
