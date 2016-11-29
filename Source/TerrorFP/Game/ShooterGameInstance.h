@@ -15,6 +15,6 @@ class TERRORFP_API UShooterGameInstance : public UGameInstance
 	GENERATED_BODY()
 
     
-
+    
     
 };
