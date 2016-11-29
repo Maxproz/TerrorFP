@@ -157,6 +157,7 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
     LatentActionInfoSprintOff.UUID = 1235;
     LatentActionInfoSprintOff.Linkage = 0;
     
+    // Delayed function calls that monitor sprinting variables
     if (bIsSprintOn)
     {
         UKismetSystemLibrary::Delay(this, 0.2, LatentActionInfoSprintOn);
