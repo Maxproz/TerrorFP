@@ -19,6 +19,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light", meta = (AllowPrivateAccess = "true"))
+    class USpotLightComponent* SpotLight;
     
     // member variables
     /* Can re-enable these if I ever end up using the other type of timer.
@@ -27,11 +29,9 @@ private:
     float Period;
     float TimerEnd;
     */
-    
-    
-    
-    
-    
+
+    // Flashlight is set to off at the start of the game.
+    bool bIsFlashLightOn = false;
 
 public:
 	ATP_ThirdPersonCharacter();
@@ -90,7 +90,16 @@ public:
     UFUNCTION()
     void NotSprintingRecovery();
     
+    UFUNCTION()
+    void FlashLight();
+    
+    UFUNCTION()
+    void AdjustBatteryAmount();
+    
 protected:
+    // TODO: Should these be private? Can they be private?
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Battery System")
+    int32 PlayerBattery = 50;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sprint System")
     bool bIsSprintOn = false;
@@ -135,5 +144,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+    /** Returns SpotLight subobject **/
+    FORCEINLINE class USpotLightComponent* GetSpotLight() const { return SpotLight; }
 };
 

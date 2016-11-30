@@ -52,6 +52,13 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+    
+    SpotLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
+    SpotLight->SetRelativeLocation(FVector(344, -9, 60));
+    SpotLight->SetIntensity(200000.0);
+    SpotLight->SetupAttachment(GetFollowCamera());
+    SpotLight->SetVisibility(false);
+    
 }
 
 void ATP_ThirdPersonCharacter::BeginPlay()
@@ -138,9 +145,10 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
         SetActorTickEnabled(true);
      */
     
-
+    // TODO: filter out the below two logics into functions
     
     // TODO: Sequence node said the above stuff runs first, then this stuff below.
+    // Sprint stuff
     FLatentActionInfo LatentActionInfoSprintOn;
     LatentActionInfoSprintOn.CallbackTarget = this;
     LatentActionInfoSprintOn.ExecutionFunction = "AdjustSprintAmount";
@@ -162,6 +170,42 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
     {
         UKismetSystemLibrary::Delay(this, 0.2, LatentActionInfoSprintOff);
     }
+    
+    
+    
+    
+    // TODO: Sequence node said the above stuff runs first and second, then this stuff third
+    // Battery stuff
+    
+    FLatentActionInfo LatentActionInfoBatteryOn;
+    LatentActionInfoBatteryOn.CallbackTarget = this;
+    LatentActionInfoBatteryOn.ExecutionFunction = "AdjustBatteryAmount";
+    LatentActionInfoBatteryOn.UUID = 1236;
+    LatentActionInfoBatteryOn.Linkage = 0;
+    
+    if (bIsFlashLightOn)
+    {
+        if (PlayerBattery > 0)
+        {
+            UKismetSystemLibrary::Delay(this, 0.2, LatentActionInfoBatteryOn);
+        }
+        else
+        {
+            SpotLight->ToggleVisibility();
+            bIsFlashLightOn = false;
+            
+            if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "FlashLight Battery Died!");
+        }
+    }
+}
+
+void ATP_ThirdPersonCharacter::AdjustBatteryAmount()
+{
+    PlayerBattery = PlayerBattery - 1;
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,
+                                     "Player Battery" + FString::FromInt(PlayerBattery));
+    return;
 }
 
 void ATP_ThirdPersonCharacter::AdjustSprintAmount()
@@ -243,8 +287,44 @@ void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
     // Sprint Functionality
     PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ATP_ThirdPersonCharacter::Sprinting);
     PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ATP_ThirdPersonCharacter::StopSprinting);
+    
+    // FlashLight Functionality
+    PlayerInputComponent->BindAction("FlashLight", IE_Pressed, this, &ATP_ThirdPersonCharacter::FlashLight);
+
 }
 
+void ATP_ThirdPersonCharacter::FlashLight()
+{
+    if (bIsFlashLightOn == true)
+    {
+        SpotLight->SetVisibility(false);
+        bIsFlashLightOn = false;
+    }
+    else
+    {
+        if (PlayerBattery > 0)
+        {
+            SpotLight->SetVisibility(true);
+            bIsFlashLightOn = true;
+        }
+    }
+}
+
+void ATP_ThirdPersonCharacter::Sprinting()
+{
+    if (PlayerStamina >= 1)
+    {
+        bIsSprintOn = true;
+        // Default MaxWalkSpeed for TP_Template is 600, grant double bonus for sprint.
+        GetCharacterMovement()->MaxWalkSpeed = 1200;
+    }
+}
+
+void ATP_ThirdPersonCharacter::StopSprinting()
+{
+    bIsSprintOn = false;
+    GetCharacterMovement()->MaxWalkSpeed = 600;
+}
 
 void ATP_ThirdPersonCharacter::OnResetVR()
 {
@@ -302,18 +382,4 @@ void ATP_ThirdPersonCharacter::MoveRight(float Value)
 	}
 }
 
-void ATP_ThirdPersonCharacter::Sprinting()
-{
-    if (PlayerStamina >= 1)
-    {
-        bIsSprintOn = true;
-        // Default MaxWalkSpeed for TP_Template is 600, grant double bonus for sprint.
-        GetCharacterMovement()->MaxWalkSpeed = 1200;
-    }
-}
 
-void ATP_ThirdPersonCharacter::StopSprinting()
-{
-    bIsSprintOn = false;
-    GetCharacterMovement()->MaxWalkSpeed = 600;
-}
