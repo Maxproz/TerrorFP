@@ -6,7 +6,7 @@
 #include "SurvivalHUDWidget.h"
 
 
-// TODO: Figure out why this function doesn't work for the progress bar.
+// TODO: Figure out why this function doesn't work for the progress bar. Make reddit post or ask orfeas
 /*
 float USurvivalHUDWidget::GetPercentHunger()
 {

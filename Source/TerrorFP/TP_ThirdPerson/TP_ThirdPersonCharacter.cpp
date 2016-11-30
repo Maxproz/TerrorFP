@@ -138,11 +138,7 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
         SetActorTickEnabled(true);
      */
     
-    // TODO: Code to make sure stamina doesn't go above 100 probably filter out into a function
-    if (PlayerStamina > 100)
-    {
-        PlayerStamina = 100;
-    }
+
     
     // TODO: Sequence node said the above stuff runs first, then this stuff below.
     FLatentActionInfo LatentActionInfoSprintOn;
@@ -186,8 +182,16 @@ void ATP_ThirdPersonCharacter::AdjustSprintAmount()
 
 void ATP_ThirdPersonCharacter::NotSprintingRecovery()
 {
-    PlayerStamina = PlayerStamina + 1;
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::FromInt(PlayerStamina));
+    // Code to make sure stamina doesn't go above 100
+    if (PlayerStamina < 100)
+    {
+        PlayerStamina = PlayerStamina + 1;
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::FromInt(PlayerStamina));
+    }
+    else
+    {
+        // We probably don't need to do anything here
+    }
 }
 
 void ATP_ThirdPersonCharacter::SetPlayerHunger()
