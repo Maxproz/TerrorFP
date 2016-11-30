@@ -9,6 +9,8 @@ class ATP_ThirdPersonCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+private:
+    
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
@@ -25,10 +27,17 @@ class ATP_ThirdPersonCharacter : public ACharacter
     float Period;
     float TimerEnd;
     */
-     
+    
+    
+    
+    
+    
+
 public:
 	ATP_ThirdPersonCharacter();
 
+    // TODO: Filter out all these functions to their correct public/private/protected etc..
+    
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -43,6 +52,10 @@ public:
     // TODO: Should this be public?
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hunger System")
     int32 PlayerHunger = 100;
+    
+    // TODO: This should probably be FText somehow
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Quest System")
+    FString PlayerObjective = "Start Mission";
     
     // TODO: Rename this function to what it actually does.
     UFUNCTION()
