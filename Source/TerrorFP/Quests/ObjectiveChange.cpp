@@ -2,8 +2,9 @@
 
 #include "TerrorFP.h"
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
+#include "../Game/SurvivalSaveGame.h"
 #include "ObjectiveChange.h"
-
+#include "Kismet/KismetStringLibrary.h"
 
 // Sets default values
 AObjectiveChange::AObjectiveChange()
@@ -46,6 +47,39 @@ void AObjectiveChange::OnTriggerEnter(AActor* OverlapedActor, AActor* OtherActor
         if (Char)
         {
             Char->PlayerObjective = NextQuest;
+            if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+            {
+                // TODO: Filter out into function
+                // If it does exist
+                SaverSubClass = UGameplayStatics::LoadGameFromSlot(SlotName, 0);
+                
+                USurvivalSaveGame* SurvivalSaveGame = Cast<USurvivalSaveGame>(SaverSubClass);
+                
+                SurvivalSaveGame->SetPlayerObjective(FText::FromString(NextQuest));
+                
+                bool save = UGameplayStatics::SaveGameToSlot(SaverSubClass, SlotName, 0);
+
+                if (GEngine)
+                    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, "Save success ? " +
+                                                     UKismetStringLibrary::Conv_BoolToString(save));
+                
+            }
+            else
+            {
+                // TODO: Filter out into function
+                // If there is no save game.
+                SaverSubClass = UGameplayStatics::CreateSaveGameObject(USurvivalSaveGame::StaticClass());
+                
+                USurvivalSaveGame* SurvivalSaveGame = Cast<USurvivalSaveGame>(SaverSubClass);
+                
+                SurvivalSaveGame->SetPlayerObjective(FText::FromString(NextQuest));
+                
+                bool save = UGameplayStatics::SaveGameToSlot(SaverSubClass, SlotName, 0);
+                
+                if (GEngine)
+                    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, "Save success ? " +
+                                                     UKismetStringLibrary::Conv_BoolToString(save));
+            }
         }
     }
 }

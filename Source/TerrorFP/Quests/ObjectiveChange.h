@@ -27,12 +27,17 @@ public:
     /*This function is called when an Actor exits the Trigger - 4.12 version*/
     UFUNCTION()
     void OnTriggerExit(AActor* OverlappedActor, AActor* OtherActor);
-	
+    
+    const FString SlotName = "SurvivalSaveGame";
+    
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
     class UBoxComponent* BoxCollider;
     
     UPROPERTY(EditAnywhere, Category = "Quest System")
     FString NextQuest;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Save Game")
+    USaveGame* SaverSubClass;
     
 };

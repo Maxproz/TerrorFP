@@ -72,7 +72,7 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     TSubclassOf<USurvivalHUDWidget> WidgetTemplate;
     
-    // TODO: Should this be public?
+    // TODO: Should this be public? 
     USurvivalHUDWidget* WidgetInstance;
     
     // Called when the game starts or when spawned
