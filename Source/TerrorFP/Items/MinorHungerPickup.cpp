@@ -96,18 +96,20 @@ void AMinorHungerPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAc
     
     ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(OtherActor);
     
+    // TODO: Add a variable to remove this magic number See BatteryPickup for reference
     Char->MinorHungerPickup(25);
     
-    // If health is greater than 100 set it to 100
+    // If health is greater than 100 set it to 100.
+    // TODO: Add a const variable to represent max hunger.
     if (Char->GetPlayerHunger() > 100)
     {
-        // TODO: Make it so this can't print 100125 in debug message.
-        // - or confirm it wont mess anything up in the actual game.
+        // TODO: Add a const variable to represent max hunger. See BatteryPickup for reference
+        Char->PlayerHunger = 100;
+        
+
         if (GEngine)
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue,
-                "Player Hunger MAX: Set to 100" + FString::FromInt(Char->GetPlayerHunger()));
-        
-        Char->PlayerHunger = 100;
+                "Player Hunger MAX reached! Set to: " + FString::FromInt(Char->GetPlayerHunger()));
     }
     else
     {

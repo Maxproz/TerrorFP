@@ -9,6 +9,8 @@
 
 const int32 PlayerHungerDecay = 5;
 const int32 PlayerCountdownToNextHungerTick = 1;
+static const FString SprintScrollingText(TEXT("Player Sprint: "));
+static const FString HungerScrollingMessage(TEXT("Player Hunger: "));
 
 ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 {
@@ -219,7 +221,8 @@ void ATP_ThirdPersonCharacter::AdjustSprintAmount()
     else
     {
         PlayerStamina = PlayerStamina - 1;
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::FromInt(PlayerStamina));
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan,
+                                         SprintScrollingText + FString::FromInt(PlayerStamina));
         return;
     }
 }
@@ -230,7 +233,8 @@ void ATP_ThirdPersonCharacter::NotSprintingRecovery()
     if (PlayerStamina < 100)
     {
         PlayerStamina = PlayerStamina + 1;
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::FromInt(PlayerStamina));
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan,
+                                         SprintScrollingText + FString::FromInt(PlayerStamina));
     }
     else
     {
@@ -242,11 +246,10 @@ void ATP_ThirdPersonCharacter::SetPlayerHunger()
 {
     PlayerHunger = PlayerHunger - PlayerHungerDecay;
     
-    static const FString ScrollingMessage(TEXT("Player Hunger: "));
-
     if (GEngine)
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, ScrollingMessage + FString::FromInt(PlayerHunger));
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black,
+                                         HungerScrollingMessage + FString::FromInt(PlayerHunger));
     }
     
 }

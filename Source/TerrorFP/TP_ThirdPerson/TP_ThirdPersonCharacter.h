@@ -96,6 +96,15 @@ public:
     UFUNCTION()
     void AdjustBatteryAmount();
     
+    UFUNCTION(BlueprintCallable, Category = "Battery System")
+    void PickupBattery(int32 BatteryAmount) { PlayerBattery = PlayerBattery + BatteryAmount; }
+    
+    UFUNCTION()
+    int32 GetPlayerBattery() const { return PlayerBattery; }
+    
+    UFUNCTION()
+    void SetMaxBattery() { PlayerBattery = 100; }
+    
 protected:
     // TODO: Should these be private? Can they be private?
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Battery System")
