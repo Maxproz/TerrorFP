@@ -124,7 +124,7 @@ public:
     void SetSlotOneItem(int32 Item) { SlotOneItem = Item; }
     void SetSlotTwoItem(int32 Item) { SlotTwoItem = Item; }
     void SetSlotThreeItem(int32 Item) { SlotThreeItem = Item; }
-    void SetSlotFoirItem(int32 Item) { SlotFourItem = Item; }
+    void SetSlotFourItem(int32 Item) { SlotFourItem = Item; }
     void SetSlotFiveItem(int32 Item) { SlotFiveItem = Item; }
     
 protected:

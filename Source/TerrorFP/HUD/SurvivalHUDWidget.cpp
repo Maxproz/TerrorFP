@@ -85,7 +85,7 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
             SlotOneImage->SetColorAndOpacity(FLinearColor::White);
             
             // TODO: Keep this in until we need to set the image.
-//            ImageOneBrush.TintColor = FLinearColor::White;
+            // ImageOneBrush.TintColor = FLinearColor::White;
             
             break;
         }
@@ -95,16 +95,270 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
             SlotOneImage->SetColorAndOpacity(FLinearColor::Blue);
             
             // TODO: Keep this in until we need to set the image.
-//            ImageOneBrush.TintColor = FLinearColor::Blue;
+            // ImageOneBrush.TintColor = FLinearColor::Blue;
             break;
         }
         default:
         {
             if (GEngine)
-                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to get valid Item ID");
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to get valid Item ID: Image1");
             break;
         }
     }
     
     return ImageOneBrush;
 }
+
+
+FSlateBrush USurvivalHUDWidget::GetItemTwoImage() const
+{
+    // The brush we will return
+    FSlateBrush ImageTwoBrush;
+    
+    if (GetWorld()->GetFirstPlayerController() == nullptr ||
+        GetWorld()->GetFirstPlayerController()->GetPawn() == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+    
+    if (Char == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    // Get the Item we will use to switch on.
+    int32 Item = Char->GetSlotTwoItem();
+    
+    // Get a reference to the widget with the name InvSlotOne
+    UWidget* SlotTwoWidget = GetWidgetFromName("InvSlotTwo");
+    
+    // Cast it to an Image we can use
+    UImage* SlotTwoImage = Cast<UImage>(SlotTwoWidget);
+    
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // We are showing Empty as white for now.
+            SlotTwoImage->SetColorAndOpacity(FLinearColor::White);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::White;
+            
+            break;
+        }
+        case WoodID:
+        {
+            // We are showing Wood as Blue for now.
+            SlotTwoImage->SetColorAndOpacity(FLinearColor::Blue);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to get valid Item ID: Image2");
+            break;
+        }
+    }
+    
+    
+    return ImageTwoBrush;
+}
+
+FSlateBrush USurvivalHUDWidget::GetItemThreeImage() const
+{
+    // The brush we will return
+    FSlateBrush ImageThreeBrush;
+    
+    if (GetWorld()->GetFirstPlayerController() == nullptr ||
+        GetWorld()->GetFirstPlayerController()->GetPawn() == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+    
+    if (Char == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    // Get the Item we will use to switch on.
+    int32 Item = Char->GetSlotThreeItem();
+    
+    // Get a reference to the widget with the name InvSlotOne
+    UWidget* SlotThreeWidget = GetWidgetFromName("InvSlotThree");
+    
+    // Cast it to an Image we can use
+    UImage* SlotThreeImage = Cast<UImage>(SlotThreeWidget);
+    
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // We are showing Empty as white for now.
+            SlotThreeImage->SetColorAndOpacity(FLinearColor::White);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::White;
+            
+            break;
+        }
+        case WoodID:
+        {
+            // We are showing Wood as Blue for now.
+            SlotThreeImage->SetColorAndOpacity(FLinearColor::Blue);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to get valid Item ID: Image2");
+            break;
+        }
+    }
+    
+    
+    return ImageThreeBrush;
+}
+
+FSlateBrush USurvivalHUDWidget::GetItemFourImage() const
+{
+    // The brush we will return
+    FSlateBrush ImageFourBrush;
+    
+    if (GetWorld()->GetFirstPlayerController() == nullptr ||
+        GetWorld()->GetFirstPlayerController()->GetPawn() == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+    
+    if (Char == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    // Get the Item we will use to switch on.
+    int32 Item = Char->GetSlotFourItem();
+    
+    // Get a reference to the widget with the name InvSlotOne
+    UWidget* SlotFourWidget = GetWidgetFromName("InvSlotFour");
+    
+    // Cast it to an Image we can use
+    UImage* SlotFourImage = Cast<UImage>(SlotFourWidget);
+    
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // We are showing Empty as white for now.
+            SlotFourImage->SetColorAndOpacity(FLinearColor::White);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::White;
+            
+            break;
+        }
+        case WoodID:
+        {
+            // We are showing Wood as Blue for now.
+            SlotFourImage->SetColorAndOpacity(FLinearColor::Blue);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to get valid Item ID: Image2");
+            break;
+        }
+    }
+    
+    
+    return ImageFourBrush;
+}
+
+FSlateBrush USurvivalHUDWidget::GetItemFiveImage() const
+{
+    // The brush we will return
+    FSlateBrush ImageFiveBrush;
+    
+    if (GetWorld()->GetFirstPlayerController() == nullptr ||
+        GetWorld()->GetFirstPlayerController()->GetPawn() == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+    
+    if (Char == nullptr)
+    {
+        // Should we return something else here?
+        return FSlateBrush();
+    }
+    
+    // Get the Item we will use to switch on.
+    int32 Item = Char->GetSlotFiveItem();
+    
+    // Get a reference to the widget with the name InvSlotOne
+    UWidget* SlotFiveWidget = GetWidgetFromName("InvSlotFive");
+    
+    // Cast it to an Image we can use
+    UImage* SlotFiveImage = Cast<UImage>(SlotFiveWidget);
+    
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // We are showing Empty as white for now.
+            SlotFiveImage->SetColorAndOpacity(FLinearColor::White);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::White;
+            
+            break;
+        }
+        case WoodID:
+        {
+            // We are showing Wood as Blue for now.
+            SlotFiveImage->SetColorAndOpacity(FLinearColor::Blue);
+            
+            // TODO: Keep this in until we need to set the image.
+            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to get valid Item ID: Image2");
+            break;
+        }
+    }
+    
+    
+    return ImageFiveBrush;
+}
+

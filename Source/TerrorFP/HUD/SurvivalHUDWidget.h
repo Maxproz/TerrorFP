@@ -24,4 +24,15 @@ public:
     UFUNCTION(BlueprintPure, Category = "HUD")
     FSlateBrush GetItemOneImage() const;
     
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    FSlateBrush GetItemTwoImage() const;
+    
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    FSlateBrush GetItemThreeImage() const;
+    
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    FSlateBrush GetItemFourImage() const;
+    
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    FSlateBrush GetItemFiveImage() const;
 };

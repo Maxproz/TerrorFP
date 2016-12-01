@@ -10,6 +10,9 @@ class TERRORFP_API AWoodInvPickup : public AActor
 {
 	GENERATED_BODY()
 	
+private:
+    bool bIsEmptyID(int32 SlotID) { return SlotID == 0; }
+    
 public:	
 	// Sets default values for this actor's properties
 	AWoodInvPickup();

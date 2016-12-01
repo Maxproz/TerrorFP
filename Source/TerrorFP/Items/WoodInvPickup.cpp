@@ -67,22 +67,55 @@ void AWoodInvPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
     
     ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(OtherActor);
     
-    int32 SlotOneItem = Char->GetSlotOneItem();
     
-    if (SlotOneItem == EmptyID)
+    // TODO: Refactor this junk into a for or for-each loop.
+    if (bIsEmptyID(Char->GetSlotOneItem()))
     {
         Char->SetSlotOneItem(WoodID);
         K2_DestroyActor();
     }
     else
     {
-//        if ()
-//        {
-        
-//        }
+        if (bIsEmptyID(Char->GetSlotTwoItem()))
+        {
+            Char->SetSlotTwoItem(WoodID);
+            K2_DestroyActor();
+        }
+        else
+        {
+            if (bIsEmptyID(Char->GetSlotThreeItem()))
+            {
+                Char->SetSlotThreeItem(WoodID);
+                K2_DestroyActor();
+            }
+            else
+            {
+                if (bIsEmptyID(Char->GetSlotFourItem()))
+                {
+                    Char->SetSlotFourItem(WoodID);
+                    K2_DestroyActor();
+                }
+                else
+                {
+                    if (bIsEmptyID(Char->GetSlotFiveItem()))
+                    {
+                        Char->SetSlotFiveItem(WoodID);
+                        K2_DestroyActor();
+                    }
+                    else
+                    {
+                        // Inform Character that inventory is full.
+                        // Maybe call a function from SurviorHUDWidget
+                        // - to have a string widget appear momentarily.
+                        if (GEngine)
+                            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Inventory is Full");
+                    }
+                }
+            }
+        }
     }
     
-    // Do we need to destroy the actor after pickup?
+    //  TODO: Can we need to destroy the actor just once here after pickup?
     // K2_DestroyActor();
     
     // TODO: Call a function here to spawn emitter and sound effect.
