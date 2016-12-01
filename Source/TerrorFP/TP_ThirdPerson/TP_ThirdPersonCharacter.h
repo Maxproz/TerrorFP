@@ -33,9 +33,24 @@ private:
     // Flashlight is set to off at the start of the game.
     bool bIsFlashLightOn = false;
 
+    
+    // Inventory Slots for the Items.
+    // TODO: Should these be private?
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+    int32 SlotOneItem;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+    int32 SlotTwoItem;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+    int32 SlotThreeItem;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+    int32 SlotFourItem;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+    int32 SlotFiveItem;
+    
 public:
 	ATP_ThirdPersonCharacter();
 
+    // TODO: Remove unnecessary UFUNCTION() https://answers.unrealengine.com/questions/129550/when-to-use-ufunction-macro.html
     // TODO: Filter out all these functions to their correct public/private/protected etc..
     
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -105,6 +120,13 @@ public:
     UFUNCTION()
     void SetMaxBattery() { PlayerBattery = 100; }
     
+    // Setters for the inventory slots
+    void SetSlotOneItem(int32 Item) { SlotOneItem = Item; }
+    void SetSlotTwoItem(int32 Item) { SlotTwoItem = Item; }
+    void SetSlotThreeItem(int32 Item) { SlotThreeItem = Item; }
+    void SetSlotFoirItem(int32 Item) { SlotFourItem = Item; }
+    void SetSlotFiveItem(int32 Item) { SlotFiveItem = Item; }
+    
 protected:
     // TODO: Should these be private? Can they be private?
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Battery System")
@@ -155,5 +177,11 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
     /** Returns SpotLight subobject **/
     FORCEINLINE class USpotLightComponent* GetSpotLight() const { return SpotLight; }
+                                                                                  
+    FORCEINLINE int32 GetSlotOneItem() const { return SlotOneItem; }
+    FORCEINLINE int32 GetSlotTwoItem() const { return SlotTwoItem; }
+    FORCEINLINE int32 GetSlotThreeItem() const { return SlotThreeItem; }
+    FORCEINLINE int32 GetSlotFourItem() const { return SlotFourItem; }
+    FORCEINLINE int32 GetSlotFiveItem() const { return SlotFiveItem; }
 };
 

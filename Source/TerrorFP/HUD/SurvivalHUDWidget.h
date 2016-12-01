@@ -21,4 +21,7 @@ public:
     UFUNCTION(BlueprintPure, Category = "HUD")
     float GetPercentBattery() const;
     
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    FSlateBrush GetItemOneImage() const;
+    
 };

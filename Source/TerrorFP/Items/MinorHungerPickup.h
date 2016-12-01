@@ -23,7 +23,8 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
+    
+    // TODO: Should these be public?
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Pickup")
     UStaticMeshComponent* Cube;
     
