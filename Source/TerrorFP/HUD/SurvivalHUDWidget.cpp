@@ -22,3 +22,20 @@ float USurvivalHUDWidget::GetPercentHunger()
     return ReturnValue;
 }
 */
+
+
+float USurvivalHUDWidget::GetPercentBattery() const
+{
+    if (GetWorld()->GetFirstPlayerController() == nullptr ||
+        GetWorld()->GetFirstPlayerController()->GetPawn() == nullptr)
+    {
+        return 0.0f;
+    }
+    
+    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+    
+    if (Char == nullptr)
+        return 0.0f;
+    
+    return (float)Char->GetPlayerBattery() / 100.0f;
+}

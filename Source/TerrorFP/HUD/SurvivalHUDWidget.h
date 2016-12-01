@@ -18,4 +18,7 @@ public:
 //    UFUNCTION(BlueprintPure, Category = "HUD")
 //	float GetPercentHunger();
 	
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    float GetPercentBattery() const;
+    
 };

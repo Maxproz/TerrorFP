@@ -65,7 +65,7 @@ public:
     void MinorHungerPickup(int32 Hunger);
     
     UFUNCTION()
-    int32 GetPlayerHunger() { return PlayerHunger; }
+    int32 GetPlayerHunger() const { return PlayerHunger; }
     
     // TODO: Should this be public?
     // Widget to create and add to viewport on beginplay
