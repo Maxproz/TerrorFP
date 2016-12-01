@@ -32,7 +32,9 @@ private:
 
     // Flashlight is set to off at the start of the game.
     bool bIsFlashLightOn = false;
-
+    
+    // Variable to manage the flipflop in the DiscardItem action mapping
+    bool bIsAOn = true;
     
     // Inventory Slots for the Items.
     // TODO: Should these be private?
@@ -65,8 +67,8 @@ public:
     virtual void Tick( float DeltaSeconds ) override;
     
     // TODO: Should this be public?
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hunger System")
-    int32 PlayerHunger = 100;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hunger System")
+    int32 PlayerHunger = 500;
     
     // TODO: This should probably be FText somehow
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Quest System")
@@ -119,6 +121,9 @@ public:
     
     UFUNCTION()
     void SetMaxBattery() { PlayerBattery = 100; }
+
+    UFUNCTION()
+    void DiscardItem();
     
     // Setters for the inventory slots
     void SetSlotOneItem(int32 Item) { SlotOneItem = Item; }
@@ -126,6 +131,24 @@ public:
     void SetSlotThreeItem(int32 Item) { SlotThreeItem = Item; }
     void SetSlotFourItem(int32 Item) { SlotFourItem = Item; }
     void SetSlotFiveItem(int32 Item) { SlotFiveItem = Item; }
+    
+    // Cast it to an Image we can use
+    // TODO: What protection should this have.
+    // TODO: Try refactoring all these buttons into the SurvivalHUDWidget
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UButton* SlotOneButton;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UWidget* ItemButtonOne;
+    
+    UFUNCTION()
+    void SlotOneButtonClicked();
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    FVector PickupOffset = (FVector(100.0f, 0.0f, 60.0f));
+    
+    // Slot One Button Style
+    FButtonStyle ButtonStyle;
     
 protected:
     // TODO: Should these be private? Can they be private?
@@ -137,6 +160,10 @@ protected:
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sprint System")
     int32 PlayerStamina = 100;
+    
+    // Inventory discard
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory System")
+    bool bIsDiscardActive = false;
     
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();

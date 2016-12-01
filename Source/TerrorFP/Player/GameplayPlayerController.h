@@ -15,5 +15,4 @@ class TERRORFP_API AGameplayPlayerController : public APlayerController
 	
 	
 	
-	
 };

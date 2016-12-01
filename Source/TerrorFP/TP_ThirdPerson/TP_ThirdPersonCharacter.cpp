@@ -2,6 +2,7 @@
 
 #include "TerrorFP.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
+#include "../Items/WoodInvPickup.h"
 #include "TP_ThirdPersonCharacter.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -11,6 +12,12 @@ const int32 PlayerHungerDecay = 5;
 const int32 PlayerCountdownToNextHungerTick = 1;
 static const FString SprintScrollingText(TEXT("Player Sprint: "));
 static const FString HungerScrollingMessage(TEXT("Player Hunger: "));
+
+// TODO: move these to a separate file and include it.
+const int32 EmptyID = 0;     // White
+const int32 WoodID = 1;      // Blue
+const int32 KeyID = 2;       // Purple
+const int32 TinderBoxID = 3; // Green
 
 ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 {
@@ -61,6 +68,12 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
     SpotLight->SetupAttachment(GetFollowCamera());
     SpotLight->SetVisibility(false);
     
+    
+    // Setup the tint color defaults to make the buttons see through
+    ButtonStyle.Normal.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
+    ButtonStyle.Pressed.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
+    ButtonStyle.Hovered.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
+
 }
 
 void ATP_ThirdPersonCharacter::BeginPlay()
@@ -69,12 +82,29 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     
     // Make use this later in-order to not auto select the BP class?
     //YourCustomWidgetUIClass = LoadClass<YourCustomWidget>(..., TEXT(path_to_your_widget_in_content_browser), ...);
-    
+
     WidgetInstance = CreateWidget<USurvivalHUDWidget>(GetWorld(), WidgetTemplate);
-    
     if (WidgetInstance)
     {
         WidgetInstance->AddToViewport();
+        
+        // Old code ends here
+        
+        // TODO: Test this code to see if it works.
+        ItemButtonOne = WidgetInstance->GetWidgetFromName("InvButtonOne");
+        // Cast it to an Image we can use
+        if (ItemButtonOne)
+        {
+            SlotOneButton = Cast<UButton>(ItemButtonOne);
+        }
+        if (SlotOneButton)
+        {
+            // Setup the colors
+            SlotOneButton->SetColorAndOpacity(FLinearColor(1.0,1.0,1.0,0.0));
+            SlotOneButton->SetStyle(ButtonStyle);
+            // Add the function binding.
+            SlotOneButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotOneButtonClicked);
+        }
     }
 }
 
@@ -202,6 +232,46 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
     }
 }
 
+// TODO: This should probably be in the SurvivalHUDWidget.cpp
+void ATP_ThirdPersonCharacter::SlotOneButtonClicked()
+{
+    if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, "Slot One Button Clicked!");
+    
+    // Item to be used in our switch statement
+    int32 Item = GetSlotOneItem();
+    
+    // Get the player Transform so we can use its rotation.
+    FTransform PlayerContTransformInfo = UGameplayStatics::GetPlayerController(this, 0)->GetActorTransform();
+
+    // The Transform that we will spawn the item at.
+    FTransform ItemSpawnTransform;
+
+    // Get the data for the spawning item
+    FVector RotatedVector = PlayerContTransformInfo.GetRotation().RotateVector(PickupOffset);
+    FVector ItemSpawnLocation = GetActorLocation() + RotatedVector;
+    
+    ItemSpawnTransform.SetRotation(PlayerContTransformInfo.GetRotation());
+    ItemSpawnTransform.SetLocation(ItemSpawnLocation);
+    ItemSpawnTransform.SetScale3D(FVector(1.0f, 1.0f, 1.0f));
+    
+    switch (Item)
+    {
+        case WoodID:
+        {
+            GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotOneItem(EmptyID);
+            
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item");
+        }
+    }
+}
+
 void ATP_ThirdPersonCharacter::AdjustBatteryAmount()
 {
     PlayerBattery = PlayerBattery - 1;
@@ -293,8 +363,66 @@ void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
     
     // FlashLight Functionality
     PlayerInputComponent->BindAction("FlashLight", IE_Pressed, this, &ATP_ThirdPersonCharacter::FlashLight);
-
+    
+    // Inventory Discard
+    PlayerInputComponent->BindAction("ToggleDiscard", IE_Pressed, this, &ATP_ThirdPersonCharacter::DiscardItem);
 }
+
+void ATP_ThirdPersonCharacter::DiscardItem()
+{
+    // A is always going to be "On" the first time this function is called
+    if (bIsAOn) // Run A
+    {
+        // Turn Discard active on.
+        bIsDiscardActive = true;
+        
+        APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+        
+        if (PlayerController)
+        {
+            FInputModeGameAndUI GameAndUI;
+            PlayerController->SetInputMode(GameAndUI);
+            // Enable the mouse cursor + other settings during When Discard is enabled.
+            PlayerController->bShowMouseCursor = 1;
+            
+            // TODO: Figure out if these are even needed or if the FInputMode setters are enough.
+            PlayerController->bEnableClickEvents = 1;
+            PlayerController->bEnableMouseOverEvents = 1;
+
+            
+            // TODO: Remove debug code
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Discarding");
+        }
+        
+        // Make it so B runs next
+        bIsAOn = false;
+    }
+    else // Run B
+    {
+        // Turn Discard active off
+        bIsDiscardActive = false;
+        
+        APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+        
+        if (PlayerController)
+        {
+            FInputModeGameOnly GameOnly;
+            PlayerController->SetInputMode(GameOnly);
+            
+            // Enable the mouse cursor during When Discard is enabled.
+            PlayerController->bShowMouseCursor = 0;
+
+            // TODO: Remove debug code
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Not Discarding");
+        }
+        
+        // Make it so A runs next
+        bIsAOn = true;
+    }
+}
+
 
 void ATP_ThirdPersonCharacter::FlashLight()
 {

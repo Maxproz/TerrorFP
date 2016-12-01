@@ -51,6 +51,17 @@ void AWoodInvPickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
+    
+    // Delay for making it so this item can't be picked up shortly after being dropped (AKA: "Spawned")
+    FLatentActionInfo LatentActionInfoRecentDropDelay;
+    LatentActionInfoRecentDropDelay.CallbackTarget = this;
+    LatentActionInfoRecentDropDelay.ExecutionFunction = "RecentDropDelay";
+    LatentActionInfoRecentDropDelay.UUID = 1240;
+    LatentActionInfoRecentDropDelay.Linkage = 0;
+    
+    // The delay call
+    UKismetSystemLibrary::Delay(this, 3.0, LatentActionInfoRecentDropDelay);
+    
 }
 
 // Called every frame
@@ -60,66 +71,74 @@ void AWoodInvPickup::Tick( float DeltaTime )
 
 }
 
+void AWoodInvPickup::RecentDropDelay()
+{
+    // The delay is finished, make it so item can be pickedup.
+    bCanPickup = true;
+}
+
 void AWoodInvPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     if (GEngine)
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Pickup Item Overlap Starting");
     
-    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(OtherActor);
-    
-    
-    // TODO: Refactor this junk into a for or for-each loop.
-    if (bIsEmptyID(Char->GetSlotOneItem()))
+    if (bCanPickup == true) // Executes below actions if true, does nothing otherwise.
     {
-        Char->SetSlotOneItem(WoodID);
-        K2_DestroyActor();
-    }
-    else
-    {
-        if (bIsEmptyID(Char->GetSlotTwoItem()))
+        ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(OtherActor);
+        
+        
+        // TODO: Refactor this junk into a for or for-each loop.
+        if (bIsEmptyID(Char->GetSlotOneItem()))
         {
-            Char->SetSlotTwoItem(WoodID);
+            Char->SetSlotOneItem(WoodID);
             K2_DestroyActor();
         }
         else
         {
-            if (bIsEmptyID(Char->GetSlotThreeItem()))
+            if (bIsEmptyID(Char->GetSlotTwoItem()))
             {
-                Char->SetSlotThreeItem(WoodID);
+                Char->SetSlotTwoItem(WoodID);
                 K2_DestroyActor();
             }
             else
             {
-                if (bIsEmptyID(Char->GetSlotFourItem()))
+                if (bIsEmptyID(Char->GetSlotThreeItem()))
                 {
-                    Char->SetSlotFourItem(WoodID);
+                    Char->SetSlotThreeItem(WoodID);
                     K2_DestroyActor();
                 }
                 else
                 {
-                    if (bIsEmptyID(Char->GetSlotFiveItem()))
+                    if (bIsEmptyID(Char->GetSlotFourItem()))
                     {
-                        Char->SetSlotFiveItem(WoodID);
+                        Char->SetSlotFourItem(WoodID);
                         K2_DestroyActor();
                     }
                     else
                     {
-                        // Inform Character that inventory is full.
-                        // Maybe call a function from SurviorHUDWidget
-                        // - to have a string widget appear momentarily.
-                        if (GEngine)
-                            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Inventory is Full");
+                        if (bIsEmptyID(Char->GetSlotFiveItem()))
+                        {
+                            Char->SetSlotFiveItem(WoodID);
+                            K2_DestroyActor();
+                        }
+                        else
+                        {
+                            // Inform Character that inventory is full.
+                            // Maybe call a function from SurviorHUDWidget
+                            // - to have a string widget appear momentarily.
+                            if (GEngine)
+                                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Inventory is Full");
+                        }
                     }
                 }
             }
         }
+        
+        //  TODO: Can we need to destroy the actor just once here after pickup?
+        // K2_DestroyActor();
+        
+        // TODO: Call a function here to spawn emitter and sound effect.
     }
-    
-    //  TODO: Can we need to destroy the actor just once here after pickup?
-    // K2_DestroyActor();
-    
-    // TODO: Call a function here to spawn emitter and sound effect.
-    
 }
 
 void AWoodInvPickup::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -129,3 +148,5 @@ void AWoodInvPickup::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
     //    if (GEngine)
     //        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Pickup Item Overlap Ending");
 }
+
+

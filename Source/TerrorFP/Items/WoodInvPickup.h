@@ -13,6 +13,9 @@ class TERRORFP_API AWoodInvPickup : public AActor
 private:
     bool bIsEmptyID(int32 SlotID) { return SlotID == 0; }
     
+    // Should spawn as not "Cannot Pickup" until our spawn delay is finished.
+    bool bCanPickup = false;
+    
 public:	
 	// Sets default values for this actor's properties
 	AWoodInvPickup();
@@ -37,6 +40,9 @@ public:
     UFUNCTION()
     void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
+    // TODO: Should this be a UFUNCTION()? Should it be public?
+    UFUNCTION()
+    void RecentDropDelay();
     
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Pickup")
