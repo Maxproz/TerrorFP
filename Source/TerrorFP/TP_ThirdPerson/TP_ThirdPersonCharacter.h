@@ -132,6 +132,8 @@ public:
     void SetSlotFourItem(int32 Item) { SlotFourItem = Item; }
     void SetSlotFiveItem(int32 Item) { SlotFiveItem = Item; }
     
+    UTexture2D* FirstImgTexture;
+    
     // Cast it to an Image we can use
     // TODO: What protection should this have.
     // TODO: Try refactoring all these buttons into the SurvivalHUDWidget

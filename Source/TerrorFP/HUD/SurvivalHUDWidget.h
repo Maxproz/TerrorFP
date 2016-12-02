@@ -13,11 +13,18 @@ class TERRORFP_API USurvivalHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+private:
+//    virtual void NativeConstruct() override;
+    
 public:
-	
+    
+    USurvivalHUDWidget(const FObjectInitializer& ObjectInitializer);
 //    UFUNCTION(BlueprintPure, Category = "HUD")
 //	float GetPercentHunger();
 	
+    UPROPERTY()
+    class UTexture2D* ImageTexture;
+    
     UFUNCTION(BlueprintPure, Category = "HUD")
     float GetPercentBattery() const;
     
@@ -35,4 +42,11 @@ public:
     
     UFUNCTION(BlueprintPure, Category = "HUD")
     FSlateBrush GetItemFiveImage() const;
+    
+    
+    
+//    // Called every frame
+//    virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+//    
+//    void PrepareSlotOneItem();
 };

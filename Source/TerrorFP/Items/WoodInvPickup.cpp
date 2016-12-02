@@ -30,12 +30,12 @@ AWoodInvPickup::AWoodInvPickup()
         //Cube->SetWorldScale3D(FVector(0.8f));
     }
     
-    // Set material of the cube
-    static ConstructorHelpers::FObjectFinder<UMaterial> CubeVisualAssetMaterial(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
-    if (CubeVisualAsset.Succeeded())
-    {
-        Cube->SetMaterial(0, CubeVisualAssetMaterial.Object);
-    }
+//    // Set material of the cube
+//    static ConstructorHelpers::FObjectFinder<UMaterial> CubeVisualAssetMaterial(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
+//    if (CubeVisualAsset.Succeeded())
+//    {
+//        Cube->SetMaterial(0, CubeVisualAssetMaterial.Object);
+//    }
     
     BoxCollision = CreateDefaultSubobject<UBoxComponent>(FName("BoxCollision"));
     BoxCollision->SetRelativeScale3D(FVector(4.6, 4.6, 4.6));

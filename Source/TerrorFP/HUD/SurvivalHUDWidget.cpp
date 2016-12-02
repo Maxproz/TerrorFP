@@ -29,6 +29,7 @@ float USurvivalHUDWidget::GetPercentHunger()
 */
 
 
+
 float USurvivalHUDWidget::GetPercentBattery() const
 {
     if (GetWorld()->GetFirstPlayerController() == nullptr ||
@@ -45,6 +46,81 @@ float USurvivalHUDWidget::GetPercentBattery() const
     }
     
     return (float)Char->GetPlayerBattery() / 100.0f;
+}
+
+//// Called every frame
+//void USurvivalHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+//{
+//    Super::NativeTick( MyGeometry, InDeltaTime );
+//    
+//    // Prepare delay function variables
+//    FLatentActionInfo LatentActionInfoSlotOne;
+//    LatentActionInfoSlotOne.CallbackTarget = this;
+//    LatentActionInfoSlotOne.ExecutionFunction = "PrepareSlotOneItem";
+//    LatentActionInfoSlotOne.UUID = 1111;
+//    LatentActionInfoSlotOne.Linkage = 0;
+//    
+//    // The delay function call
+//    UKismetSystemLibrary::Delay(this, 0.5, LatentActionInfoSlotOne);
+//
+//}
+//
+//void USurvivalHUDWidget::PrepareSlotOneItem()
+//{
+//    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+//    
+//    // Get Item for the upcoming switch
+//    if (!Char) { return; }
+//    int32 Item = Char->GetSlotOneItem();
+//    
+//    // Prepare Image that we will need for setting the brush
+//    // Get a reference to the widget with the name InvSlotOne
+//    UWidget* SlotOneWidget = GetWidgetFromName("InvSlotOne");
+//    // Cast it to an Image we can use
+//    UImage* SlotOneImage = Cast<UImage>(SlotOneWidget);
+//    // Get the Texture for the Image
+//    static ConstructorHelpers::FObjectFinder<UTexture2D>
+//    LogTexture(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
+//    
+//    // Change the image
+//    switch (Item)
+//    {
+//        case WoodID:
+//        {
+//            if (LogTexture.Succeeded())
+//            {
+//                SlotOneImage->SetBrushFromTexture(LogTexture.Object);
+//                break;
+//            }
+//        }
+//        default:
+//        {
+//            if (GEngine)
+//                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to set Image1.png");
+//            break;
+//        }
+//    }
+//}
+//
+//void USurvivalHUDWidget::NativeConstruct()
+//{
+//    Super::NativeConstruct();
+//    
+//    UObject* something = StaticLoadObject(UObject::StaticClass(), nullptr, (TEXT("/Game/SurvivalHorrorGame/LogsInvItem")));
+//    
+//    LogTex = Cast<UTexture2D>(something);
+//
+//}
+
+USurvivalHUDWidget::USurvivalHUDWidget(const FObjectInitializer& ObjectInitializer) :
+Super(ObjectInitializer)
+{
+    static ConstructorHelpers::FObjectFinder<UTexture2D> ImgTex(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
+    
+    ImageTexture = ImgTex.Object;
+    
+    
+    
 }
 
 FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
@@ -82,7 +158,7 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
         case EmptyID:
         {
             // We are showing Empty as white for now.
-            SlotOneImage->SetColorAndOpacity(FLinearColor::White);
+//            SlotOneImage->SetColorAndOpacity(FLinearColor::White);
             
             // TODO: Keep this in until we need to set the image.
             // ImageOneBrush.TintColor = FLinearColor::White;
@@ -92,11 +168,15 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
         case WoodID:
         {
             // We are showing Wood as Blue for now.
-            SlotOneImage->SetColorAndOpacity(FLinearColor::Blue);
+//            SlotOneImage->SetColorAndOpacity(FLinearColor::Blue);
+            
+ 
+//            SlotOneImage->SetBrushFromTexture(ImageTexture);
+            ImageOneBrush.SetResourceObject(ImageTexture);
+            break;
             
             // TODO: Keep this in until we need to set the image.
             // ImageOneBrush.TintColor = FLinearColor::Blue;
-            break;
         }
         default:
         {
@@ -106,8 +186,10 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
         }
     }
     
+    
     return ImageOneBrush;
 }
+
 
 
 FSlateBrush USurvivalHUDWidget::GetItemTwoImage() const

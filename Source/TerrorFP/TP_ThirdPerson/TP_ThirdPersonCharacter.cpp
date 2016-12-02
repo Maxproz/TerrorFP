@@ -74,6 +74,17 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
     ButtonStyle.Pressed.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
     ButtonStyle.Hovered.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
 
+    
+    
+    // Set material of the cube
+//    static ConstructorHelpers::FObjectFinder<UTexture2D> LogsTexture(TEXT("));
+    
+//    if (LogsTexture.Succeeded())
+//    {
+//        FirstImgTexture = LogsTexture.Object;
+//    }
+    
+    
 }
 
 void ATP_ThirdPersonCharacter::BeginPlay()
