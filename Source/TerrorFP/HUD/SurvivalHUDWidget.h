@@ -23,7 +23,14 @@ public:
 //	float GetPercentHunger();
 	
     UPROPERTY()
-    class UTexture2D* ImageTexture;
+    class UTexture2D* WoodImageTexture;
+    
+    UPROPERTY()
+    class UTexture2D* KeyImageTexture;
+    
+    // TODO: Implement this once you got a good default texture
+    // UPROPERTY()
+    //class UTexture2D* EmptyImageTexture;
     
     UFUNCTION(BlueprintPure, Category = "HUD")
     float GetPercentBattery() const;

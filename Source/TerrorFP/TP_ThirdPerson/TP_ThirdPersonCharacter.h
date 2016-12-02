@@ -132,7 +132,6 @@ public:
     void SetSlotFourItem(int32 Item) { SlotFourItem = Item; }
     void SetSlotFiveItem(int32 Item) { SlotFiveItem = Item; }
     
-    UTexture2D* FirstImgTexture;
     
     // Cast it to an Image we can use
     // TODO: What protection should this have.
@@ -143,8 +142,44 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UWidget* ItemButtonOne;
     
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UButton* SlotTwoButton;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UWidget* ItemButtonTwo;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UButton* SlotThreeButton;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UWidget* ItemButtonThree;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UButton* SlotFourButton;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UWidget* ItemButtonFour;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UButton* SlotFiveButton;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UWidget* ItemButtonFive;
+    
     UFUNCTION()
     void SlotOneButtonClicked();
+    
+    UFUNCTION()
+    void SlotTwoButtonClicked();
+    
+    UFUNCTION()
+    void SlotThreeButtonClicked();
+    
+    UFUNCTION()
+    void SlotFourButtonClicked();
+    
+    UFUNCTION()
+    void SlotFiveButtonClicked();
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     FVector PickupOffset = (FVector(100.0f, 0.0f, 60.0f));

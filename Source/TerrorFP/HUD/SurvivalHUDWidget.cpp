@@ -115,11 +115,13 @@ float USurvivalHUDWidget::GetPercentBattery() const
 USurvivalHUDWidget::USurvivalHUDWidget(const FObjectInitializer& ObjectInitializer) :
 Super(ObjectInitializer)
 {
-    static ConstructorHelpers::FObjectFinder<UTexture2D> ImgTex(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
+    static ConstructorHelpers::FObjectFinder<UTexture2D> WoodTex(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
+    WoodImageTexture = WoodTex.Object;
     
-    ImageTexture = ImgTex.Object;
+    static ConstructorHelpers::FObjectFinder<UTexture2D> KeyTex(TEXT("/Game/SurvivalHorrorGame/KeyInvItem"));
+    KeyImageTexture = KeyTex.Object;
     
-    
+    // TODO: Implement default image and additional image stuff here.
     
 }
 
@@ -145,38 +147,34 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
     
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotOneItem();
-    
-    // Get a reference to the widget with the name InvSlotOne
-    UWidget* SlotOneWidget = GetWidgetFromName("InvSlotOne");
-    
-    // Cast it to an Image we can use
-    UImage* SlotOneImage = Cast<UImage>(SlotOneWidget);
+
+    // TODO: remove this stuff if it compiles without
+//    // Get a reference to the widget with the name InvSlotOne
+//    UWidget* SlotOneWidget = GetWidgetFromName("InvSlotOne");
+//    
+//    // Cast it to an Image we can use
+//    UImage* SlotOneImage = Cast<UImage>(SlotOneWidget);
     
     
     switch (Item)
     {
         case EmptyID:
         {
-            // We are showing Empty as white for now.
-//            SlotOneImage->SetColorAndOpacity(FLinearColor::White);
-            
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::White;
+
             
             break;
         }
         case WoodID:
         {
-            // We are showing Wood as Blue for now.
-//            SlotOneImage->SetColorAndOpacity(FLinearColor::Blue);
+            // TODO: Figure out why this didn't work: SlotOneImage->SetBrushFromTexture(ImageTexture);
             
- 
-//            SlotOneImage->SetBrushFromTexture(ImageTexture);
-            ImageOneBrush.SetResourceObject(ImageTexture);
+            ImageOneBrush.SetResourceObject(WoodImageTexture);
             break;
-            
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::Blue;
+        }
+        case KeyID:
+        {
+            ImageOneBrush.SetResourceObject(KeyImageTexture);
+            break;
         }
         default:
         {
@@ -185,7 +183,6 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
             break;
         }
     }
-    
     
     return ImageOneBrush;
 }
@@ -215,32 +212,29 @@ FSlateBrush USurvivalHUDWidget::GetItemTwoImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotTwoItem();
     
-    // Get a reference to the widget with the name InvSlotOne
-    UWidget* SlotTwoWidget = GetWidgetFromName("InvSlotTwo");
-    
-    // Cast it to an Image we can use
-    UImage* SlotTwoImage = Cast<UImage>(SlotTwoWidget);
+//    // Get a reference to the widget with the name InvSlotOne
+//    UWidget* SlotTwoWidget = GetWidgetFromName("InvSlotTwo");
+//    
+//    // Cast it to an Image we can use
+//    UImage* SlotTwoImage = Cast<UImage>(SlotTwoWidget);
     
     
     switch (Item)
     {
         case EmptyID:
         {
-            // We are showing Empty as white for now.
-            SlotTwoImage->SetColorAndOpacity(FLinearColor::White);
             
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::White;
             
             break;
         }
         case WoodID:
         {
-            // We are showing Wood as Blue for now.
-            SlotTwoImage->SetColorAndOpacity(FLinearColor::Blue);
-            
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            ImageTwoBrush.SetResourceObject(WoodImageTexture);
+            break;
+        }
+        case KeyID:
+        {
+            ImageTwoBrush.SetResourceObject(KeyImageTexture);
             break;
         }
         default:
@@ -250,7 +244,6 @@ FSlateBrush USurvivalHUDWidget::GetItemTwoImage() const
             break;
         }
     }
-    
     
     return ImageTwoBrush;
 }
@@ -278,32 +271,29 @@ FSlateBrush USurvivalHUDWidget::GetItemThreeImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotThreeItem();
     
-    // Get a reference to the widget with the name InvSlotOne
-    UWidget* SlotThreeWidget = GetWidgetFromName("InvSlotThree");
-    
-    // Cast it to an Image we can use
-    UImage* SlotThreeImage = Cast<UImage>(SlotThreeWidget);
+//    // Get a reference to the widget with the name InvSlotOne
+//    UWidget* SlotThreeWidget = GetWidgetFromName("InvSlotThree");
+//    
+//    // Cast it to an Image we can use
+//    UImage* SlotThreeImage = Cast<UImage>(SlotThreeWidget);
     
     
     switch (Item)
     {
         case EmptyID:
         {
-            // We are showing Empty as white for now.
-            SlotThreeImage->SetColorAndOpacity(FLinearColor::White);
             
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::White;
             
             break;
         }
         case WoodID:
         {
-            // We are showing Wood as Blue for now.
-            SlotThreeImage->SetColorAndOpacity(FLinearColor::Blue);
-            
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            ImageThreeBrush.SetResourceObject(WoodImageTexture);
+            break;
+        }
+        case KeyID:
+        {
+            ImageThreeBrush.SetResourceObject(KeyImageTexture);
             break;
         }
         default:
@@ -313,7 +303,6 @@ FSlateBrush USurvivalHUDWidget::GetItemThreeImage() const
             break;
         }
     }
-    
     
     return ImageThreeBrush;
 }
@@ -341,32 +330,29 @@ FSlateBrush USurvivalHUDWidget::GetItemFourImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotFourItem();
     
-    // Get a reference to the widget with the name InvSlotOne
-    UWidget* SlotFourWidget = GetWidgetFromName("InvSlotFour");
-    
-    // Cast it to an Image we can use
-    UImage* SlotFourImage = Cast<UImage>(SlotFourWidget);
+//    // Get a reference to the widget with the name InvSlotOne
+//    UWidget* SlotFourWidget = GetWidgetFromName("InvSlotFour");
+//    
+//    // Cast it to an Image we can use
+//    UImage* SlotFourImage = Cast<UImage>(SlotFourWidget);
     
     
     switch (Item)
     {
         case EmptyID:
         {
-            // We are showing Empty as white for now.
-            SlotFourImage->SetColorAndOpacity(FLinearColor::White);
             
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::White;
             
             break;
         }
         case WoodID:
         {
-            // We are showing Wood as Blue for now.
-            SlotFourImage->SetColorAndOpacity(FLinearColor::Blue);
-            
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            ImageFourBrush.SetResourceObject(WoodImageTexture);
+            break;
+        }
+        case KeyID:
+        {
+            ImageFourBrush.SetResourceObject(KeyImageTexture);
             break;
         }
         default:
@@ -376,7 +362,6 @@ FSlateBrush USurvivalHUDWidget::GetItemFourImage() const
             break;
         }
     }
-    
     
     return ImageFourBrush;
 }
@@ -404,32 +389,29 @@ FSlateBrush USurvivalHUDWidget::GetItemFiveImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotFiveItem();
     
-    // Get a reference to the widget with the name InvSlotOne
-    UWidget* SlotFiveWidget = GetWidgetFromName("InvSlotFive");
-    
-    // Cast it to an Image we can use
-    UImage* SlotFiveImage = Cast<UImage>(SlotFiveWidget);
+//    // Get a reference to the widget with the name InvSlotOne
+//    UWidget* SlotFiveWidget = GetWidgetFromName("InvSlotFive");
+//    
+//    // Cast it to an Image we can use
+//    UImage* SlotFiveImage = Cast<UImage>(SlotFiveWidget);
     
     
     switch (Item)
     {
         case EmptyID:
         {
-            // We are showing Empty as white for now.
-            SlotFiveImage->SetColorAndOpacity(FLinearColor::White);
             
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::White;
             
             break;
         }
         case WoodID:
         {
-            // We are showing Wood as Blue for now.
-            SlotFiveImage->SetColorAndOpacity(FLinearColor::Blue);
-            
-            // TODO: Keep this in until we need to set the image.
-            // ImageOneBrush.TintColor = FLinearColor::Blue;
+            ImageFiveBrush.SetResourceObject(WoodImageTexture);
+            break;
+        }
+        case KeyID:
+        {
+            ImageFiveBrush.SetResourceObject(KeyImageTexture);
             break;
         }
         default:
@@ -439,7 +421,6 @@ FSlateBrush USurvivalHUDWidget::GetItemFiveImage() const
             break;
         }
     }
-    
     
     return ImageFiveBrush;
 }

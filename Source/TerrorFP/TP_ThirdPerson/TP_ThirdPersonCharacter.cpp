@@ -3,6 +3,7 @@
 #include "TerrorFP.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
 #include "../Items/WoodInvPickup.h"
+#include "../Items/KeyPickup.h"
 #include "TP_ThirdPersonCharacter.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -103,11 +104,27 @@ void ATP_ThirdPersonCharacter::BeginPlay()
         
         // TODO: Test this code to see if it works.
         ItemButtonOne = WidgetInstance->GetWidgetFromName("InvButtonOne");
+        ItemButtonTwo = WidgetInstance->GetWidgetFromName("InvButtonTwo");
+        ItemButtonThree = WidgetInstance->GetWidgetFromName("InvButtonThree");
+        ItemButtonFour = WidgetInstance->GetWidgetFromName("InvButtonFour");
+        ItemButtonFive = WidgetInstance->GetWidgetFromName("InvButtonFive");
+        
         // Cast it to an Image we can use
         if (ItemButtonOne)
-        {
             SlotOneButton = Cast<UButton>(ItemButtonOne);
-        }
+        
+        if (ItemButtonOne)
+            SlotTwoButton = Cast<UButton>(ItemButtonTwo);
+        
+        if (ItemButtonThree)
+            SlotThreeButton = Cast<UButton>(ItemButtonThree);
+        
+        if (ItemButtonFour)
+            SlotFourButton = Cast<UButton>(ItemButtonFour);
+        
+        if (ItemButtonFive)
+            SlotFiveButton = Cast<UButton>(ItemButtonFive);
+        
         if (SlotOneButton)
         {
             // Setup the colors
@@ -115,6 +132,34 @@ void ATP_ThirdPersonCharacter::BeginPlay()
             SlotOneButton->SetStyle(ButtonStyle);
             // Add the function binding.
             SlotOneButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotOneButtonClicked);
+        }
+        
+        if (SlotTwoButton)
+        {
+            SlotTwoButton->SetColorAndOpacity(FLinearColor(1.0,1.0,1.0,0.0));
+            SlotTwoButton->SetStyle(ButtonStyle);
+            SlotTwoButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotTwoButtonClicked);
+        }
+        
+        if (SlotThreeButton)
+        {
+            SlotThreeButton->SetColorAndOpacity(FLinearColor(1.0,1.0,1.0,0.0));
+            SlotThreeButton->SetStyle(ButtonStyle);
+            SlotThreeButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotThreeButtonClicked);
+        }
+        
+        if (SlotFourButton)
+        {
+            SlotFourButton->SetColorAndOpacity(FLinearColor(1.0,1.0,1.0,0.0));
+            SlotFourButton->SetStyle(ButtonStyle);
+            SlotFourButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotFourButtonClicked);
+        }
+        
+        if (SlotFiveButton)
+        {
+            SlotFiveButton->SetColorAndOpacity(FLinearColor(1.0,1.0,1.0,0.0));
+            SlotFiveButton->SetStyle(ButtonStyle);
+            SlotFiveButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotFiveButtonClicked);
         }
     }
 }
@@ -268,17 +313,225 @@ void ATP_ThirdPersonCharacter::SlotOneButtonClicked()
     
     switch (Item)
     {
+        case EmptyID:
+        {
+            // do nothing
+            break;
+        }
         case WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
             SetSlotOneItem(EmptyID);
-            
+            break;
+        }
+        case KeyID:
+        {
+            GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotOneItem(EmptyID);
             break;
         }
         default:
         {
             if (GEngine)
-                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item");
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item1");
+        }
+    }
+}
+
+void ATP_ThirdPersonCharacter::SlotTwoButtonClicked()
+{
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, "Slot Two Button Clicked!");
+    
+    // Item to be used in our switch statement
+    int32 Item = GetSlotTwoItem();
+    
+    // Get the player Transform so we can use its rotation.
+    FTransform PlayerContTransformInfo = UGameplayStatics::GetPlayerController(this, 0)->GetActorTransform();
+    
+    // The Transform that we will spawn the item at.
+    FTransform ItemSpawnTransform;
+    
+    // Get the data for the spawning item
+    FVector RotatedVector = PlayerContTransformInfo.GetRotation().RotateVector(PickupOffset);
+    FVector ItemSpawnLocation = GetActorLocation() + RotatedVector;
+    
+    ItemSpawnTransform.SetRotation(PlayerContTransformInfo.GetRotation());
+    ItemSpawnTransform.SetLocation(ItemSpawnLocation);
+    ItemSpawnTransform.SetScale3D(FVector(1.0f, 1.0f, 1.0f));
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // do nothing
+            break;
+        }
+        case WoodID:
+        {
+            GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotTwoItem(EmptyID);
+            break;
+        }
+        case KeyID:
+        {
+            GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotTwoItem(EmptyID);
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item2");
+        }
+    }
+}
+
+void ATP_ThirdPersonCharacter::SlotThreeButtonClicked()
+{
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, "Slot Three Button Clicked!");
+    
+    // Item to be used in our switch statement
+    int32 Item = GetSlotThreeItem();
+    
+    // Get the player Transform so we can use its rotation.
+    FTransform PlayerContTransformInfo = UGameplayStatics::GetPlayerController(this, 0)->GetActorTransform();
+    
+    // The Transform that we will spawn the item at.
+    FTransform ItemSpawnTransform;
+    
+    // Get the data for the spawning item
+    FVector RotatedVector = PlayerContTransformInfo.GetRotation().RotateVector(PickupOffset);
+    FVector ItemSpawnLocation = GetActorLocation() + RotatedVector;
+    
+    ItemSpawnTransform.SetRotation(PlayerContTransformInfo.GetRotation());
+    ItemSpawnTransform.SetLocation(ItemSpawnLocation);
+    ItemSpawnTransform.SetScale3D(FVector(1.0f, 1.0f, 1.0f));
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // do nothing
+            break;
+        }
+        case WoodID:
+        {
+            GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotThreeItem(EmptyID);
+            break;
+        }
+        case KeyID:
+        {
+            GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotThreeItem(EmptyID);
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item3");
+        }
+    }
+}
+
+
+
+void ATP_ThirdPersonCharacter::SlotFourButtonClicked()
+{
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, "Slot Four Button Clicked!");
+    
+    // Item to be used in our switch statement
+    int32 Item = GetSlotFourItem();
+    
+    // Get the player Transform so we can use its rotation.
+    FTransform PlayerContTransformInfo = UGameplayStatics::GetPlayerController(this, 0)->GetActorTransform();
+    
+    // The Transform that we will spawn the item at.
+    FTransform ItemSpawnTransform;
+    
+    // Get the data for the spawning item
+    FVector RotatedVector = PlayerContTransformInfo.GetRotation().RotateVector(PickupOffset);
+    FVector ItemSpawnLocation = GetActorLocation() + RotatedVector;
+    
+    ItemSpawnTransform.SetRotation(PlayerContTransformInfo.GetRotation());
+    ItemSpawnTransform.SetLocation(ItemSpawnLocation);
+    ItemSpawnTransform.SetScale3D(FVector(1.0f, 1.0f, 1.0f));
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // do nothing
+            break;
+        }
+        case WoodID:
+        {
+            GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotFourItem(EmptyID);
+            break;
+        }
+        case KeyID:
+        {
+            GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotFourItem(EmptyID);
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item4");
+        }
+    }
+}
+
+void ATP_ThirdPersonCharacter::SlotFiveButtonClicked()
+{
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, "Slot Five Button Clicked!");
+    
+    // Item to be used in our switch statement
+    int32 Item = GetSlotFiveItem();
+    
+    // Get the player Transform so we can use its rotation.
+    FTransform PlayerContTransformInfo = UGameplayStatics::GetPlayerController(this, 0)->GetActorTransform();
+    
+    // The Transform that we will spawn the item at.
+    FTransform ItemSpawnTransform;
+    
+    // Get the data for the spawning item
+    FVector RotatedVector = PlayerContTransformInfo.GetRotation().RotateVector(PickupOffset);
+    FVector ItemSpawnLocation = GetActorLocation() + RotatedVector;
+    
+    ItemSpawnTransform.SetRotation(PlayerContTransformInfo.GetRotation());
+    ItemSpawnTransform.SetLocation(ItemSpawnLocation);
+    ItemSpawnTransform.SetScale3D(FVector(1.0f, 1.0f, 1.0f));
+    
+    switch (Item)
+    {
+        case EmptyID:
+        {
+            // do nothing
+            break;
+        }
+        case WoodID:
+        {
+            GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotFiveItem(EmptyID);
+            break;
+        }
+        case KeyID:
+        {
+            GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetSlotFiveItem(EmptyID);
+            break;
+        }
+        default:
+        {
+            if (GEngine)
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Not able to Spawn Actor Item5");
         }
     }
 }
