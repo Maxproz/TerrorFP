@@ -4,6 +4,9 @@
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
 #include "../Items/WoodInvPickup.h"
 #include "../Items/KeyPickup.h"
+#include "../Weapons/Rifle.h"
+#include "../Components/FiringComponent.h"
+#include "GameFramework/InputSettings.h"
 #include "TP_ThirdPersonCharacter.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +61,7 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+    FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -69,6 +72,27 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
     SpotLight->SetupAttachment(GetFollowCamera());
     SpotLight->SetVisibility(false);
     
+    // FIRST PERSON STUFF
+    // Create a CameraComponent
+    FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+    FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+    FirstPersonCameraComponent->RelativeLocation = FVector(-39.56f, 1.75f, 64.f); // Position the camera
+    // Can't rely on this? reference https://www.udemy.com/unrealcourse/learn/v4/t/lecture/6090586
+    // Changing this to true because it fixed the "cant move mouse cursor when stationary bug"
+    FirstPersonCameraComponent->bUsePawnControlRotation = true;
+    
+    
+    
+    // Create a mesh component that will be used when being viewed from a
+    // - '1st person' view (when controlling this pawn)
+    Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
+    Mesh1P->SetOnlyOwnerSee(true);
+    Mesh1P->SetupAttachment(FirstPersonCameraComponent);
+    Mesh1P->bCastDynamicShadow = false;
+    Mesh1P->CastShadow = false;
+    Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
+    Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
+    
     
     // Setup the tint color defaults to make the buttons see through
     ButtonStyle.Normal.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
@@ -76,16 +100,10 @@ ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
     ButtonStyle.Hovered.TintColor = FLinearColor(1.0, 1.0, 1.0, 0.0);
 
     
-    
-    // Set material of the cube
-//    static ConstructorHelpers::FObjectFinder<UTexture2D> LogsTexture(TEXT("));
-    
-//    if (LogsTexture.Succeeded())
-//    {
-//        FirstImgTexture = LogsTexture.Object;
-//    }
-    
-    
+    // TODO: remove this here or not? --- if (bIsHoldingRifle = true)
+    FiringComponent = CreateDefaultSubobject<UFiringComponent>(TEXT("FiringComponent"));
+
+    // TODO: Learn more about Movement/Rotation https://www.udemy.com/unrealcourse/learn/v4/t/lecture/5915890
 }
 
 void ATP_ThirdPersonCharacter::BeginPlay()
@@ -162,12 +180,49 @@ void ATP_ThirdPersonCharacter::BeginPlay()
             SlotFiveButton->OnClicked.AddDynamic(this,&ATP_ThirdPersonCharacter::SlotFiveButtonClicked);
         }
     }
+
+    // TODO: Think about refactoring this rifle code into a conditional for pickup.
+    if (RifleBPThirdPerson == nullptr) { return; }
+    ThirdPersonRifle = GetWorld()->SpawnActor<ARifle>(RifleBPThirdPerson);
+    
+    if (RifleBPFirstPerson == nullptr) { return; }
+    FirstPersonRifle = GetWorld()->SpawnActor<ARifle>(RifleBPFirstPerson);
+    
+    // Attach gun mesh component to Skeleton,
+    // - doing it here because the skeleton is not yet created in the constructor
+    FName fnWeaponSocket = TEXT("MFGrip");
+    FName FirstPersonRifleSocket = TEXT("GripPoint");
+    
+    FAttachmentTransformRules rules(EAttachmentRule::SnapToTarget, true);
+    ThirdPersonRifle->AttachToComponent(GetMesh(), rules, fnWeaponSocket);
+    FirstPersonRifle->AttachToComponent(Mesh1P, rules, FirstPersonRifleSocket);
+    
+    FiringComponent->SetupAttachment(FirstPersonCameraComponent);
+    FiringComponent->SetRelativeLocation(FVector(159.5599f, -1.75f, -16.0f));
+    FiringComponent->AnimInstance = Mesh1P->GetAnimInstance();
+
+    
+    ThirdPersonRifle->AnimInstance = GetMesh()->GetAnimInstance();
+    // FirstPersonRifle->AnimInstance = Mesh1P->GetAnimInstance();
+
+    // Fire function bind here so we know for a fact it gets bound at the right time.
+    InputComponent->BindAction("Fire", IE_Pressed, FiringComponent, &UFiringComponent::OnFire);
+    
+    
+    
 }
 
 // Called every frame
 void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
 {
     Super::Tick( DeltaTime );
+    
+    // Update the camera on Tick
+    
+    FRotator PawnRotation = GetControlRotation();
+    float PawnRotationPitch = PawnRotation.Pitch;
+    FRotator NewRotation = FRotator(PawnRotationPitch, 0.0, 0.0);
+    CameraBoom->SetRelativeRotation(NewRotation);
     
     FLatentActionInfo LatentActionInfoHunger;
     LatentActionInfoHunger.CallbackTarget = this;
@@ -436,8 +491,6 @@ void ATP_ThirdPersonCharacter::SlotThreeButtonClicked()
     }
 }
 
-
-
 void ATP_ThirdPersonCharacter::SlotFourButtonClicked()
 {
     if (GEngine)
@@ -610,9 +663,11 @@ void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &ATP_ThirdPersonCharacter::TurnAtRate);
+	
+    PlayerInputComponent->BindAxis("TurnRate", this, &ATP_ThirdPersonCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &ATP_ThirdPersonCharacter::LookUpAtRate);
+	
+    PlayerInputComponent->BindAxis("LookUpRate", this, &ATP_ThirdPersonCharacter::LookUpAtRate);
 
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ATP_ThirdPersonCharacter::TouchStarted);

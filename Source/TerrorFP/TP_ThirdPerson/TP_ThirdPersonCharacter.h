@@ -22,6 +22,14 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light", meta = (AllowPrivateAccess = "true"))
     class USpotLightComponent* SpotLight;
     
+    /** Pawn mesh: 1st person view (arms; seen only by self) */
+    UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+    class USkeletalMeshComponent* Mesh1P;
+    
+    /** First person camera */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+    class UCameraComponent* FirstPersonCameraComponent;
+    
     // member variables
     /* Can re-enable these if I ever end up using the other type of timer.
     float ElapsedTimeMini;
@@ -49,11 +57,21 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
     int32 SlotFiveItem;
     
+    class ARifle* ThirdPersonRifle;
+    
+    class ARifle* FirstPersonRifle;
+    
+    // player starts holding a rifle for now.
+    bool bIsHoldingRifle = true;
+    
 public:
 	ATP_ThirdPersonCharacter();
 
     // TODO: Remove unnecessary UFUNCTION() https://answers.unrealengine.com/questions/129550/when-to-use-ufunction-macro.html
     // TODO: Filter out all these functions to their correct public/private/protected etc..
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Components")
+    class UFiringComponent* FiringComponent;
     
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -65,6 +83,13 @@ public:
 
     // Called every frame
     virtual void Tick( float DeltaSeconds ) override;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    TSubclassOf<class ARifle> RifleBPThirdPerson;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    TSubclassOf<class ARifle> RifleBPFirstPerson;
+    
     
     // TODO: Should this be public?
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Hunger System")
