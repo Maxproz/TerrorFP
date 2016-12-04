@@ -2,6 +2,7 @@
 
 #include "TerrorFP.h"
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
+#include "../Game/SurvivalSaveGame.h"
 //#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "SurvivalHUDWidget.h"
 
@@ -167,7 +168,6 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
         case WoodID:
         {
             // TODO: Figure out why this didn't work: SlotOneImage->SetBrushFromTexture(ImageTexture);
-            
             ImageOneBrush.SetResourceObject(WoodImageTexture);
             break;
         }
@@ -423,5 +423,24 @@ FSlateBrush USurvivalHUDWidget::GetItemFiveImage() const
     }
     
     return ImageFiveBrush;
+}
+
+FText USurvivalHUDWidget::GetCurrentObjective() const
+{
+    if (UGameplayStatics::DoesSaveGameExist(ATP_ThirdPersonCharacter::PlayerSaveSlot, 0))
+    {
+        USaveGame* SaverSubClass = UGameplayStatics::LoadGameFromSlot(
+                                                                ATP_ThirdPersonCharacter::PlayerSaveSlot, 0);
+        USurvivalSaveGame* SurvivalSaveGame = Cast<USurvivalSaveGame>(SaverSubClass);
+        FText CurrentObjText = SurvivalSaveGame->GetPlayerObjective();
+        return CurrentObjText;
+    }
+    else
+    {
+        // TODO: for now, assuming starting quest text if no saved game state.
+        ATP_ThirdPersonCharacter Char;
+        FText ReturnText = FText::FromString(Char.PlayerObjective);
+        return ReturnText;
+    }
 }
 

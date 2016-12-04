@@ -6,6 +6,7 @@
 #include "../Items/KeyPickup.h"
 #include "../Weapons/Rifle.h"
 #include "../Components/FiringComponent.h"
+#include "../HUD/ObjectiveComplete.h"
 #include "GameFramework/InputSettings.h"
 #include "TP_ThirdPersonCharacter.h"
 
@@ -16,6 +17,8 @@ const int32 PlayerHungerDecay = 5;
 const int32 PlayerCountdownToNextHungerTick = 1;
 static const FString SprintScrollingText(TEXT("Player Sprint: "));
 static const FString HungerScrollingMessage(TEXT("Player Hunger: "));
+const FString ATP_ThirdPersonCharacter::PlayerSaveSlot(TEXT("SurvivalSaveGame"));
+const int32 DropOneWood = -1;
 
 // TODO: move these to a separate file and include it.
 const int32 EmptyID = 0;     // White
@@ -112,7 +115,12 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     
     // Make use this later in-order to not auto select the BP class?
     //YourCustomWidgetUIClass = LoadClass<YourCustomWidget>(..., TEXT(path_to_your_widget_in_content_browser), ...);
-
+    
+    WidgetInstanceObjComplete = CreateWidget<UObjectiveComplete>(GetWorld(), WidgetTemplateObjComplete);
+    WidgetInstanceObjComplete->SetIsEnabled(false);
+    
+    // Get the starting objective at begin play so the HUD can use it.
+    
     WidgetInstance = CreateWidget<USurvivalHUDWidget>(GetWorld(), WidgetTemplate);
     if (WidgetInstance)
     {
@@ -222,6 +230,7 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
     FRotator PawnRotation = GetControlRotation();
     float PawnRotationPitch = PawnRotation.Pitch;
     FRotator NewRotation = FRotator(PawnRotationPitch, 0.0, 0.0);
+    // TODO: Is this even doing anything? Should it be FirstPersonCamera or CameraBoom
     CameraBoom->SetRelativeRotation(NewRotation);
     
     FLatentActionInfo LatentActionInfoHunger;
@@ -376,6 +385,7 @@ void ATP_ThirdPersonCharacter::SlotOneButtonClicked()
         case WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetNumberOfWood(DropOneWood);
             SetSlotOneItem(EmptyID);
             break;
         }
@@ -425,6 +435,7 @@ void ATP_ThirdPersonCharacter::SlotTwoButtonClicked()
         case WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetNumberOfWood(DropOneWood);
             SetSlotTwoItem(EmptyID);
             break;
         }
@@ -474,6 +485,7 @@ void ATP_ThirdPersonCharacter::SlotThreeButtonClicked()
         case WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetNumberOfWood(DropOneWood);
             SetSlotThreeItem(EmptyID);
             break;
         }
@@ -523,6 +535,7 @@ void ATP_ThirdPersonCharacter::SlotFourButtonClicked()
         case WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetNumberOfWood(DropOneWood);
             SetSlotFourItem(EmptyID);
             break;
         }
@@ -572,6 +585,7 @@ void ATP_ThirdPersonCharacter::SlotFiveButtonClicked()
         case WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
+            SetNumberOfWood(DropOneWood);
             SetSlotFiveItem(EmptyID);
             break;
         }

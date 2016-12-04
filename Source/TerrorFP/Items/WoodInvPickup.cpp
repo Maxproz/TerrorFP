@@ -1,6 +1,7 @@
 // Copyright @Maxpro 2016
 
 #include "TerrorFP.h"
+#include "../HUD/ObjectiveComplete.h"
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
 #include "WoodInvPickup.h"
 
@@ -10,6 +11,8 @@ const int32 EmptyID = 0;     // White
 const int32 WoodID = 1;      // Blue
 const int32 KeyID = 2;       // Purple
 const int32 TinderBoxID = 3; // Green
+
+const int32 AddOneWood = 1;
 
 // Sets default values
 AWoodInvPickup::AWoodInvPickup()
@@ -133,6 +136,19 @@ void AWoodInvPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
                 }
             }
         }
+        
+        Char->SetNumberOfWood(AddOneWood);
+        
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,
+                                         "Player Log Amount: " + FString::FromInt(Char->GetNumberOfWood()));
+        
+        if (Char->GetNumberOfWood() >= 3)
+        {
+//    Char->WidgetInstanceObjComplete = CreateWidget<UObjectiveComplete>(UGameplayStatics::GetPlayerController(Char, 0));
+            Char->WidgetInstanceObjComplete->SetIsEnabled(true);
+            Char->WidgetInstanceObjComplete->AddToViewport();
+        }
+        
         
         //  TODO: Can we need to destroy the actor just once here after pickup?
         // K2_DestroyActor();

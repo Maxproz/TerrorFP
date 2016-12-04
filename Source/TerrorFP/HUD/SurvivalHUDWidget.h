@@ -50,6 +50,8 @@ public:
     UFUNCTION(BlueprintPure, Category = "HUD")
     FSlateBrush GetItemFiveImage() const;
     
+    UFUNCTION(BlueprintPure, Category = "HUD")
+    FText GetCurrentObjective() const;
     
     
 //    // Called every frame

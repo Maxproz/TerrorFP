@@ -64,11 +64,18 @@ private:
     // player starts holding a rifle for now.
     bool bIsHoldingRifle = true;
     
+    int32 NumberOfWood = 0;
+    
 public:
 	ATP_ThirdPersonCharacter();
 
     // TODO: Remove unnecessary UFUNCTION() https://answers.unrealengine.com/questions/129550/when-to-use-ufunction-macro.html
     // TODO: Filter out all these functions to their correct public/private/protected etc..
+    
+    UFUNCTION()
+    int32 SetNumberOfWood(int32 Wood) { return NumberOfWood += Wood; }
+    
+    int32 GetNumberOfWood() { return NumberOfWood; }
     
     UPROPERTY(EditDefaultsOnly, Category = "Components")
     class UFiringComponent* FiringComponent;
@@ -96,8 +103,11 @@ public:
     int32 PlayerHunger = 500;
     
     // TODO: This should probably be FText somehow
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Quest System")
-    FString PlayerObjective = "Start Mission";
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest System")
+    FString PlayerObjective = (TEXT("Collect Firewood"));
+    
+//    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Save System")
+    static const FString PlayerSaveSlot;
     
     // TODO: Rename this function to what it actually does.
     UFUNCTION()
@@ -116,6 +126,14 @@ public:
     
     // TODO: Should this be public? 
     USurvivalHUDWidget* WidgetInstance;
+    
+    // TODO: Should this be public?
+    // Widget to create and add to viewport on beginplay
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSubclassOf<class UObjectiveComplete> WidgetTemplateObjComplete;
+    
+    // TODO: Should this be public?
+    class UObjectiveComplete* WidgetInstanceObjComplete;
     
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
