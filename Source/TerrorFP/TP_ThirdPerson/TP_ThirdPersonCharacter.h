@@ -106,6 +106,7 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Quest System")
     FString PlayerObjective = (TEXT("Collect Firewood"));
     
+    
 //    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Save System")
     static const FString PlayerSaveSlot;
     

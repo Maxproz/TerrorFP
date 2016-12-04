@@ -47,6 +47,8 @@ void UObjectiveComplete::AssignAnimations()
                 
                 if( widgetAnim != nullptr )
                 {
+                    // TODO: Filter this functionality out into a TArray or struct like it says below.
+                    // The current setup only works if there is one animation.
                     // DO SOMETHING TO STORE OFF THE ANIM PTR HERE!
                     WidgetAnim = widgetAnim;
                     // E.g. add to a TArray of some struct that holds info for each anim
@@ -82,6 +84,7 @@ FSlateBrush UObjectiveComplete::GetFirstCompleteBanner() const
     return QuestOneBrush;
 }
 
+// TODO: This is not being used at the moment due to us using the animation that messes with transparency.
 FLinearColor UObjectiveComplete::MakeBannersTransparent() const
 {
     return FLinearColor(1.0,1.0,1.0,0.0);

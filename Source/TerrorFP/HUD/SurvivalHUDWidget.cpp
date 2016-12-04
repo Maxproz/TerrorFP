@@ -437,9 +437,10 @@ FText USurvivalHUDWidget::GetCurrentObjective() const
     }
     else
     {
-        // TODO: for now, assuming starting quest text if no saved game state.
-        ATP_ThirdPersonCharacter Char;
-        FText ReturnText = FText::FromString(Char.PlayerObjective);
+        // TODO: for now, assuming starting quest text if no saved game state. Change to come from player
+        // TODO: Was getting the first quest text from a default initalized non pointer really,
+        //       - what was causing the crash I was getting?
+        FText ReturnText = FText::FromString("Collect Firewood");
         return ReturnText;
     }
 }
