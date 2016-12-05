@@ -135,8 +135,7 @@ void AKeyPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
             }
         }
         
-        //  TODO: Can we need to destroy the actor just once here after pickup?
-        // K2_DestroyActor();
+        Char->SetPlayerHasDoubleDoorKey(true);
         
         // TODO: Call a function here to spawn emitter and sound effect.
     }

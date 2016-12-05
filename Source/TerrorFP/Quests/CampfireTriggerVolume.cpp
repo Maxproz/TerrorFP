@@ -33,9 +33,11 @@ void ACampfireTriggerVolume::OnTriggerEnter(AActor* OverlapedActor, AActor* Othe
         ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(OtherActor);
         if (Char)
         {
-            if (Char->GetNumberOfWood() == 3 && Char->bPlayerHasThreeWoodAtCampfire == false)
+            if (Char->GetNumberOfWood() == 3 && Char->GetHasPlayerLitCampfire() == false)
             {
-                SetCampfireObjective(Char);
+                Char->SetPlayerHasLitCampfire(true);
+                
+                SetNextObjectiveForPlayer(Char);
                 
                 // Active objective complete banner again
                 Char->WidgetInstanceObjComplete->SetIsEnabled(true);
@@ -43,14 +45,13 @@ void ACampfireTriggerVolume::OnTriggerEnter(AActor* OverlapedActor, AActor* Othe
                 
                 UWidgetAnimation* Anim = Char->WidgetInstanceObjComplete->WidgetAnim;
                 Char->WidgetInstanceObjComplete->PlayAnimation(Anim);
-                Char->bPlayerHasThreeWoodAtCampfire = true;
                 // TODO: Do I need to set pointers like Anim to nullptr here?
                 // ----- Or does ue4 take care of that for me?
-                
+            
                 // Play the matinee
                 if (!CampfireCompleteMatinee) { return; }
                 CampfireCompleteMatinee->Play();
-                
+
                 HandlePlayersWood(Char);
             }
             else
@@ -124,10 +125,18 @@ void ACampfireTriggerVolume::OnTriggerExit(AActor* OverlapedActor, AActor* Other
     }
 }
 
-void ACampfireTriggerVolume::SetCampfireObjective(ATP_ThirdPersonCharacter* Char)
+void ACampfireTriggerVolume::SetNextObjectiveForPlayer(ATP_ThirdPersonCharacter* Char)
 {
+    if (Char->GetPlayerHasDoubleDoorKey())
+    {
+        NextQuest = "Open the door.";
+    }
+    else
+    {
+        NextQuest = "Find the key and open the door";
+    }
     
-    Char->PlayerObjective = NextQuest;
+    Char->PlayerObjective = NextQuest; // TODO: Why Am I not using a function to set this nextquest variable?
     if (UGameplayStatics::DoesSaveGameExist(ATP_ThirdPersonCharacter::PlayerSaveSlot, 0))
     {
         // TODO: Filter out into function

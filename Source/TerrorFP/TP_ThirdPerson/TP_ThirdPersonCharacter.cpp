@@ -121,10 +121,10 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     
     
     // TODO: Do I need to disable the widget after it plays once to allow it to play again next time?
-    if (WidgetInstanceObjComplete->GetIsEnabled())
-    {
-        
-    }
+//    if (WidgetInstanceObjComplete->GetIsEnabled())
+//    {
+//        
+//    }
     
     // Get the starting objective at begin play so the HUD can use it.
     
@@ -360,6 +360,7 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
 }
 
 // TODO: This should probably be in the SurvivalHUDWidget.cpp
+// TODO: Would it be better to spawn from a blueprint template instead of static class?
 void ATP_ThirdPersonCharacter::SlotOneButtonClicked()
 {
     if (GEngine)
@@ -399,6 +400,7 @@ void ATP_ThirdPersonCharacter::SlotOneButtonClicked()
         case KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetPlayerHasDoubleDoorKey(false);
             SetSlotOneItem(EmptyID);
             break;
         }
@@ -449,6 +451,7 @@ void ATP_ThirdPersonCharacter::SlotTwoButtonClicked()
         case KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetPlayerHasDoubleDoorKey(false);
             SetSlotTwoItem(EmptyID);
             break;
         }
@@ -499,6 +502,7 @@ void ATP_ThirdPersonCharacter::SlotThreeButtonClicked()
         case KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetPlayerHasDoubleDoorKey(false);
             SetSlotThreeItem(EmptyID);
             break;
         }
@@ -549,6 +553,7 @@ void ATP_ThirdPersonCharacter::SlotFourButtonClicked()
         case KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetPlayerHasDoubleDoorKey(false);
             SetSlotFourItem(EmptyID);
             break;
         }
@@ -599,6 +604,7 @@ void ATP_ThirdPersonCharacter::SlotFiveButtonClicked()
         case KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
+            SetPlayerHasDoubleDoorKey(false);
             SetSlotFiveItem(EmptyID);
             break;
         }

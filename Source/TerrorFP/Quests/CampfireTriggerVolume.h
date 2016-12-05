@@ -7,6 +7,7 @@
 
 /**
  *  TODO: Bug causes this call to have no colision volume after compilation sometimes, need a fix.
+ *  TODO: Probably can just remake this class using a TriggerBox
  */
 UCLASS()
 class TERRORFP_API ACampfireTriggerVolume : public ATriggerVolume
@@ -28,22 +29,23 @@ public:
 	
     
     UFUNCTION()
-    void SetCampfireObjective(class ATP_ThirdPersonCharacter* Char);
+    void SetNextObjectiveForPlayer(class ATP_ThirdPersonCharacter* Char);
     
     // TODO: How can I get this shared across files?
     // TODO: nevermind its static inside the TPPlayer but how can I make it a UPropery EditAnywhere in there?
     // const FString SlotName = "SurvivalSaveGame";
     
     // TODO: Should this be public?
-    void HandlePlayersWood(ATP_ThirdPersonCharacter* Char);
+    void HandlePlayersWood(class ATP_ThirdPersonCharacter* Char);
     
 protected:
     
+    // Don't need to initalize this since it's 100% going to be set using a branch if-else later on.
     UPROPERTY(EditAnywhere, Category = "Quest System")
     FString NextQuest;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Save Game")
-    USaveGame* SaverSubClass;
+    class USaveGame* SaverSubClass;
     
     UPROPERTY(EditAnywhere, Category = "Matinee")
     class AMatineeActor* CampfireCompleteMatinee;

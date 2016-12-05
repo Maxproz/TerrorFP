@@ -66,7 +66,10 @@ private:
     
     int32 NumberOfWood = 0;
     
+    // Whether the player is able to open the double doors
+    bool bHasDoubleDoorKey = false;
     
+    bool bHasLitCampfire = false;
     
 public:
 	ATP_ThirdPersonCharacter();
@@ -74,7 +77,14 @@ public:
     // TODO: Remove unnecessary UFUNCTION() https://answers.unrealengine.com/questions/129550/when-to-use-ufunction-macro.html
     // TODO: Filter out all these functions to their correct public/private/protected etc..
 
-    bool bPlayerHasThreeWoodAtCampfire = false;
+    
+    bool GetHasPlayerLitCampfire() const { return bHasLitCampfire; }
+    
+    bool GetPlayerHasDoubleDoorKey() const { return bHasDoubleDoorKey; }
+    
+    void SetPlayerHasLitCampfire(bool Result) { bHasLitCampfire = Result; }
+    
+    void SetPlayerHasDoubleDoorKey(bool Result) { bHasDoubleDoorKey = Result; }
     
     UFUNCTION()
     int32 SetNumberOfWood(int32 Wood) { return NumberOfWood += Wood; }
