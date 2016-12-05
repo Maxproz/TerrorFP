@@ -51,5 +51,13 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Pickup")
     UBoxComponent* BoxCollision;
     
+    // Obj change stuff
+    UPROPERTY(EditAnywhere, Category = "Quest System")
+    FString NextQuest = "Deliver the Firewood";
     
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Save Game")
+    USaveGame* SaverSubClass;
+    
+    UFUNCTION()
+    void SetNextQuest(class ATP_ThirdPersonCharacter* Char);
 };

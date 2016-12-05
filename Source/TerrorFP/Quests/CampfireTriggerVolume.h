@@ -6,14 +6,17 @@
 #include "CampfireTriggerVolume.generated.h"
 
 /**
- * 
+ *  TODO: Bug causes this call to have no colision volume after compilation sometimes, need a fix.
  */
 UCLASS()
 class TERRORFP_API ACampfireTriggerVolume : public ATriggerVolume
 {
 	GENERATED_BODY()
-	ACampfireTriggerVolume();
-	
+
+private:
+    
+    ACampfireTriggerVolume();
+    
 public:
     /*This function is called when an Actor enters the Trigger - 4.12 version*/
     UFUNCTION()
@@ -31,6 +34,9 @@ public:
     // TODO: nevermind its static inside the TPPlayer but how can I make it a UPropery EditAnywhere in there?
     // const FString SlotName = "SurvivalSaveGame";
     
+    // TODO: Should this be public?
+    void HandlePlayersWood(ATP_ThirdPersonCharacter* Char);
+    
 protected:
     
     UPROPERTY(EditAnywhere, Category = "Quest System")
@@ -38,5 +44,8 @@ protected:
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Save Game")
     USaveGame* SaverSubClass;
+    
+    UPROPERTY(EditAnywhere, Category = "Matinee")
+    class AMatineeActor* CampfireCompleteMatinee;
     
 };

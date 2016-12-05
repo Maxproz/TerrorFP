@@ -3,6 +3,8 @@
 #include "TerrorFP.h"
 #include "../HUD/ObjectiveComplete.h"
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
+#include "../Game/SurvivalSaveGame.h"
+#include "Kismet/KismetStringLibrary.h"
 #include "WoodInvPickup.h"
 
 
@@ -147,6 +149,7 @@ void AWoodInvPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 //    Char->WidgetInstanceObjComplete = CreateWidget<UObjectiveComplete>(UGameplayStatics::GetPlayerController(Char, 0));
             Char->WidgetInstanceObjComplete->SetIsEnabled(true);
             Char->WidgetInstanceObjComplete->AddToViewport();
+            SetNextQuest(Char);
         }
         
         
@@ -165,4 +168,42 @@ void AWoodInvPickup::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
     //        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Pickup Item Overlap Ending");
 }
 
+void AWoodInvPickup::SetNextQuest(ATP_ThirdPersonCharacter* Char)
+{
+    
+    Char->PlayerObjective = NextQuest;
+    if (UGameplayStatics::DoesSaveGameExist(ATP_ThirdPersonCharacter::PlayerSaveSlot, 0))
+    {
+        // TODO: Filter out into function
+        // If it does exist
+        SaverSubClass = (UGameplayStatics::LoadGameFromSlot(ATP_ThirdPersonCharacter::PlayerSaveSlot, 0));
+        
+        USurvivalSaveGame* SurvivalSaveGame = Cast<USurvivalSaveGame>(SaverSubClass);
+        
+        SurvivalSaveGame->SetPlayerObjective(FText::FromString(NextQuest));
+        
+        bool save = UGameplayStatics::SaveGameToSlot(SaverSubClass, ATP_ThirdPersonCharacter::PlayerSaveSlot, 0);
+        
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, "Save success ? " +
+                                             UKismetStringLibrary::Conv_BoolToString(save));
+        
+    }
+    else
+    {
+        // TODO: Filter out into function
+        // If there is no save game.
+        SaverSubClass = UGameplayStatics::CreateSaveGameObject(USurvivalSaveGame::StaticClass());
+        
+        USurvivalSaveGame* SurvivalSaveGame = Cast<USurvivalSaveGame>(SaverSubClass);
+        
+        SurvivalSaveGame->SetPlayerObjective(FText::FromString(NextQuest));
+        
+        bool save = UGameplayStatics::SaveGameToSlot(SaverSubClass, ATP_ThirdPersonCharacter::PlayerSaveSlot, 0);
+        
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, "Save success ? " +
+                                             UKismetStringLibrary::Conv_BoolToString(save));
+    }
+}
 

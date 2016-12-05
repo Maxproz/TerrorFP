@@ -66,11 +66,15 @@ private:
     
     int32 NumberOfWood = 0;
     
+    
+    
 public:
 	ATP_ThirdPersonCharacter();
 
     // TODO: Remove unnecessary UFUNCTION() https://answers.unrealengine.com/questions/129550/when-to-use-ufunction-macro.html
     // TODO: Filter out all these functions to their correct public/private/protected etc..
+
+    bool bPlayerHasThreeWoodAtCampfire = false;
     
     UFUNCTION()
     int32 SetNumberOfWood(int32 Wood) { return NumberOfWood += Wood; }

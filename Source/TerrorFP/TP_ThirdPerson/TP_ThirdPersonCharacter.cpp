@@ -119,6 +119,13 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     WidgetInstanceObjComplete = CreateWidget<UObjectiveComplete>(GetWorld(), WidgetTemplateObjComplete);
     WidgetInstanceObjComplete->SetIsEnabled(false);
     
+    
+    // TODO: Do I need to disable the widget after it plays once to allow it to play again next time?
+    if (WidgetInstanceObjComplete->GetIsEnabled())
+    {
+        
+    }
+    
     // Get the starting objective at begin play so the HUD can use it.
     
     WidgetInstance = CreateWidget<USurvivalHUDWidget>(GetWorld(), WidgetTemplate);
