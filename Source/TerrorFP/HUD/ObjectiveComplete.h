@@ -30,14 +30,12 @@ public:
     
     virtual void NativeConstruct() override;
     
-    
     UWidget* FirstBanner;
     
     UWidgetAnimation* WidgetAnim;
     
-    
-    
     void AssignAnimations();
+    
 //    UObject* Img = ImageOneBrush.GetResourceObject();
 //    UImage* SlotOneImage = Cast<UImage>(Img);
 //    SlotOneImage->SetColorAndOpacity(FLinearColor(1.0,1.0,1.0,0.0));

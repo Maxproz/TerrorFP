@@ -150,6 +150,13 @@ public:
     // TODO: Should this be public?
     class UObjectiveComplete* WidgetInstanceObjComplete;
     
+    // Widget to create and add to viewport on beginplay
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSubclassOf<class UNoDoorKey> WidgetTemplateNoDoorKey;
+    
+    // TODO: Should this be public?
+    class UNoDoorKey* WidgetInstanceNoDoorKey;
+    
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
     

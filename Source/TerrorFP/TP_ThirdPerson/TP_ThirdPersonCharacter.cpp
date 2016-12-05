@@ -8,6 +8,7 @@
 #include "../Components/FiringComponent.h"
 #include "../HUD/ObjectiveComplete.h"
 #include "GameFramework/InputSettings.h"
+#include "../HUD/NoDoorKey.h"
 #include "TP_ThirdPersonCharacter.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -118,6 +119,10 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     
     WidgetInstanceObjComplete = CreateWidget<UObjectiveComplete>(GetWorld(), WidgetTemplateObjComplete);
     WidgetInstanceObjComplete->SetIsEnabled(false);
+    
+    // Create the widget that shows the player missing a key and hide it for now.
+    WidgetInstanceNoDoorKey = CreateWidget<UNoDoorKey>(GetWorld(), WidgetTemplateNoDoorKey);
+    WidgetInstanceNoDoorKey->SetIsEnabled(false);
     
     
     // TODO: Do I need to disable the widget after it plays once to allow it to play again next time?

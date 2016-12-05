@@ -5,6 +5,7 @@
 #include "Matinee/MatineeActor.h"
 #include "../Game/SurvivalSaveGame.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "../HUD/NoDoorKey.h"
 #include "DoubleDoorTrigger.h"
 
 
@@ -33,8 +34,12 @@ void ADoubleDoorTrigger::OnTriggerEnter(AActor* OverlapedActor, AActor* OtherAct
     else
     {
         // Add a popup to the players screen here saying "You do not have the key" or something
+        // Active objective complete banner again
+        Char->WidgetInstanceNoDoorKey->SetIsEnabled(true);
+        Char->WidgetInstanceNoDoorKey->AddToViewport();
         
-        
+        UWidgetAnimation* Anim = Char->WidgetInstanceNoDoorKey->WidgetAnim;
+        Char->WidgetInstanceNoDoorKey->PlayAnimation(Anim);
     }
 }
 
