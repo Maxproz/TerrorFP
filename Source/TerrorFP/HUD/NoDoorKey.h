@@ -24,7 +24,7 @@ public:
     
     virtual void NativeConstruct() override;
     
-//    UWidget* FirstBanner;
+
     UWidgetAnimation* WidgetAnim;
     
     void AssignAnimations();

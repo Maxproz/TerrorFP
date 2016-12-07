@@ -16,7 +16,14 @@ class TERRORFP_API ATerrorFPLevelScriptActor : public ALevelScriptActor
     
 public:
 
+    virtual void BeginPlay() override;
     
+    // Widget to create and add to viewport on beginplay
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSubclassOf<class UInstructionalWidget> WidgetInstructionalTemplate;
+
+    // TODO: Should this be public?
+    class UInstructionalWidget* InstructionWidget;
 
     
 };

@@ -268,12 +268,7 @@ public:
 //    UFUNCTION()
 //    void PlayerHasClickedStartingNotification();
 //    
-//    // Widget to create and add to viewport on beginplay
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    TSubclassOf<class UInstructionalWidget> WidgetTemplateInstWidget;
-//    
-//    // TODO: Should this be public?
-//    class UInstructionalWidget* InstructionWidget;
+
 //    
 //    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 //    UWidget* InsWidget;

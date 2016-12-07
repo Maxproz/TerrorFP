@@ -9,10 +9,15 @@
 ATerrorFPGameMode::ATerrorFPGameMode()
 	: Super()
 {
+    // TODO: change this to our updated character?
+    
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPersonCPP/Blueprints/FirstPersonCharacter"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
+    
+    // TODO: Can update this inorder to modify the HUD in the future.
+    
 	// use our custom HUD class
 	HUDClass = ATerrorFPHUD::StaticClass();
 }

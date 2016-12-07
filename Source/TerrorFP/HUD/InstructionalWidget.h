@@ -18,5 +18,13 @@ class TERRORFP_API UInstructionalWidget : public UUserWidget
 public:
     UInstructionalWidget(const FObjectInitializer& ObjectInitializer);
     
-
+    virtual void NativeConstruct() override;
+    
+    UFUNCTION()
+    void PlayAnimationDelay();
+    
+    
+    UWidgetAnimation* WidgetAnim;
+    
+    void AssignAnimations();
 };
