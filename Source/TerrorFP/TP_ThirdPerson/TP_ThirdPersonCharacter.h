@@ -252,6 +252,34 @@ public:
     // Slot One Button Style
     FButtonStyle ButtonStyle;
     
+    
+    // Starting Notication Stuff, TODO: Move later
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    UTextBlock* InsText;
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    UImage* FoodImage;
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    UButton* MyClickButton1;
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    UButton* MyClickButton2;
+//    
+//    bool bHasClicked = false;
+//    
+//    UFUNCTION()
+//    void PlayerHasClickedStartingNotification();
+//    
+//    // Widget to create and add to viewport on beginplay
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    TSubclassOf<class UInstructionalWidget> WidgetTemplateInstWidget;
+//    
+//    // TODO: Should this be public?
+//    class UInstructionalWidget* InstructionWidget;
+//    
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    UWidget* InsWidget;
+//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+//    UWidget* FoodWidget;
+    
 protected:
     // TODO: Should these be private? Can they be private?
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Battery System")

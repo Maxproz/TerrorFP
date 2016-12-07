@@ -5,14 +5,9 @@
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
 #include "../Game/SurvivalSaveGame.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "../StaticConstantNames.h"
 #include "WoodInvPickup.h"
 
-
-// TODO: move these to a separate file and include it. Make them static const?
-const int32 EmptyID = 0;     // White
-const int32 WoodID = 1;      // Blue
-const int32 KeyID = 2;       // Purple
-const int32 TinderBoxID = 3; // Green
 
 const int32 AddOneWood = 1;
 
@@ -95,35 +90,35 @@ void AWoodInvPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
         // TODO: Refactor this junk into a for or for-each loop.
         if (bIsEmptyID(Char->GetSlotOneItem()))
         {
-            Char->SetSlotOneItem(WoodID);
+            Char->SetSlotOneItem(StaticConstantNames::WoodID);
             K2_DestroyActor();
         }
         else
         {
             if (bIsEmptyID(Char->GetSlotTwoItem()))
             {
-                Char->SetSlotTwoItem(WoodID);
+                Char->SetSlotTwoItem(StaticConstantNames::WoodID);
                 K2_DestroyActor();
             }
             else
             {
                 if (bIsEmptyID(Char->GetSlotThreeItem()))
                 {
-                    Char->SetSlotThreeItem(WoodID);
+                    Char->SetSlotThreeItem(StaticConstantNames::WoodID);
                     K2_DestroyActor();
                 }
                 else
                 {
                     if (bIsEmptyID(Char->GetSlotFourItem()))
                     {
-                        Char->SetSlotFourItem(WoodID);
+                        Char->SetSlotFourItem(StaticConstantNames::WoodID);
                         K2_DestroyActor();
                     }
                     else
                     {
                         if (bIsEmptyID(Char->GetSlotFiveItem()))
                         {
-                            Char->SetSlotFiveItem(WoodID);
+                            Char->SetSlotFiveItem(StaticConstantNames::WoodID);
                             K2_DestroyActor();
                         }
                         else

@@ -9,7 +9,11 @@
 #include "../HUD/ObjectiveComplete.h"
 #include "GameFramework/InputSettings.h"
 #include "../HUD/NoDoorKey.h"
+#include "../StaticConstantNames.h"
+#include "../HUD/InstructionalWidget.h"
+#include "../Game/TerrorFPLevelScriptActor.h"
 #include "TP_ThirdPersonCharacter.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // ATP_ThirdPersonCharacter
@@ -21,11 +25,6 @@ static const FString HungerScrollingMessage(TEXT("Player Hunger: "));
 const FString ATP_ThirdPersonCharacter::PlayerSaveSlot(TEXT("SurvivalSaveGame"));
 const int32 DropOneWood = -1;
 
-// TODO: move these to a separate file and include it.
-const int32 EmptyID = 0;     // White
-const int32 WoodID = 1;      // Blue
-const int32 KeyID = 2;       // Purple
-const int32 TinderBoxID = 3; // Green
 
 ATP_ThirdPersonCharacter::ATP_ThirdPersonCharacter()
 {
@@ -123,6 +122,14 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     // Create the widget that shows the player missing a key and hide it for now.
     WidgetInstanceNoDoorKey = CreateWidget<UNoDoorKey>(GetWorld(), WidgetTemplateNoDoorKey);
     WidgetInstanceNoDoorKey->SetIsEnabled(false);
+    
+    
+//    // Starting Notification Widget
+//    InstructionWidget = CreateWidget<UInstructionalWidget>(GetWorld(), WidgetTemplateInstWidget);
+    
+
+    
+
     
     
     // TODO: Do I need to disable the widget after it plays once to allow it to play again next time?
@@ -229,6 +236,15 @@ void ATP_ThirdPersonCharacter::BeginPlay()
     InputComponent->BindAction("Fire", IE_Pressed, FiringComponent, &UFiringComponent::OnFire);
     
     
+    
+//    // Instruction Widget Stuff
+//    if (InstructionWidget)
+//    {
+//        InstructionWidget->AddToViewport();
+//    }
+    
+    
+
     
 }
 
@@ -362,7 +378,19 @@ void ATP_ThirdPersonCharacter::Tick( float DeltaTime )
             GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "FlashLight Battery Died!");
         }
     }
+    
 }
+//    if (bHasClicked == true)
+//    {
+//        InstructionWidget->RemoveFromParent();
+//    }
+//    
+//}
+//
+//void ATP_ThirdPersonCharacter::PlayerHasClickedStartingNotification()
+//{
+//    bHasClicked = true;
+//}
 
 // TODO: This should probably be in the SurvivalHUDWidget.cpp
 // TODO: Would it be better to spawn from a blueprint template instead of static class?
@@ -390,23 +418,23 @@ void ATP_ThirdPersonCharacter::SlotOneButtonClicked()
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
             // do nothing
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
             SetNumberOfWood(DropOneWood);
-            SetSlotOneItem(EmptyID);
+            SetSlotOneItem(StaticConstantNames::EmptyID);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
             SetPlayerHasDoubleDoorKey(false);
-            SetSlotOneItem(EmptyID);
+            SetSlotOneItem(StaticConstantNames::EmptyID);
             break;
         }
         default:
@@ -441,23 +469,23 @@ void ATP_ThirdPersonCharacter::SlotTwoButtonClicked()
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
             // do nothing
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
             SetNumberOfWood(DropOneWood);
-            SetSlotTwoItem(EmptyID);
+            SetSlotTwoItem(StaticConstantNames::EmptyID);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
             SetPlayerHasDoubleDoorKey(false);
-            SetSlotTwoItem(EmptyID);
+            SetSlotTwoItem(StaticConstantNames::EmptyID);
             break;
         }
         default:
@@ -492,23 +520,23 @@ void ATP_ThirdPersonCharacter::SlotThreeButtonClicked()
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
             // do nothing
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
             SetNumberOfWood(DropOneWood);
-            SetSlotThreeItem(EmptyID);
+            SetSlotThreeItem(StaticConstantNames::EmptyID);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
             SetPlayerHasDoubleDoorKey(false);
-            SetSlotThreeItem(EmptyID);
+            SetSlotThreeItem(StaticConstantNames::EmptyID);
             break;
         }
         default:
@@ -543,23 +571,23 @@ void ATP_ThirdPersonCharacter::SlotFourButtonClicked()
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
             // do nothing
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
             SetNumberOfWood(DropOneWood);
-            SetSlotFourItem(EmptyID);
+            SetSlotFourItem(StaticConstantNames::EmptyID);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
             SetPlayerHasDoubleDoorKey(false);
-            SetSlotFourItem(EmptyID);
+            SetSlotFourItem(StaticConstantNames::EmptyID);
             break;
         }
         default:
@@ -594,23 +622,23 @@ void ATP_ThirdPersonCharacter::SlotFiveButtonClicked()
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
             // do nothing
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             GetWorld()->SpawnActor(AWoodInvPickup::StaticClass(), &ItemSpawnTransform);
             SetNumberOfWood(DropOneWood);
-            SetSlotFiveItem(EmptyID);
+            SetSlotFiveItem(StaticConstantNames::EmptyID);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             GetWorld()->SpawnActor(AKeyPickup::StaticClass(), &ItemSpawnTransform);
             SetPlayerHasDoubleDoorKey(false);
-            SetSlotFiveItem(EmptyID);
+            SetSlotFiveItem(StaticConstantNames::EmptyID);
             break;
         }
         default:

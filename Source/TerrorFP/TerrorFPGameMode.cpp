@@ -95,8 +95,8 @@ void ATerrorFPGameMode::MoveMap(FString MapName, int32 Position)
             FLatentActionInfo info;
             info.CallbackTarget = this;
             info.ExecutionFunction = FName("SpawnMap");
-            info.UUID = 0;
-            info.Linkage = 0;
+            info.UUID = 2312;
+            info.Linkage = 1;
             
             UGameplayStatics::UnloadStreamLevel(GetWorld(), *MapName, info);
         }

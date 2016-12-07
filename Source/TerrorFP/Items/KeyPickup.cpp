@@ -2,14 +2,9 @@
 
 #include "TerrorFP.h"
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
+#include "../StaticConstantNames.h"
 #include "KeyPickup.h"
 
-
-// TODO: move these to a separate file and include it. Make them static const?
-const int32 EmptyID = 0;     // White
-const int32 WoodID = 1;      // Blue
-const int32 KeyID = 2;       // Purple
-const int32 TinderBoxID = 3; // Green
 
 // Sets default values
 AKeyPickup::AKeyPickup()
@@ -23,20 +18,7 @@ AKeyPickup::AKeyPickup()
     
     static ConstructorHelpers::FObjectFinder<UStaticMesh> KeyVisual(TEXT("/Game/SurvivalHorrorGame/Key_B_02"));
     if (KeyVisual.Succeeded())
-    {
-        Mesh->SetStaticMesh(KeyVisual.Object);
-        
-        // To change the mesh location in case I need to later.
-        //Mesh->SetRelativeLocation(FVector(0.0f, 0.0f, -40.0f));
-        //Mesh->SetWorldScale3D(FVector(0.8f));
-    }
-    
-    //    // Set material of the cube
-    //    static ConstructorHelpers::FObjectFinder<UMaterial> CubeVisualAssetMaterial(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
-    //    if (CubeVisualAsset.Succeeded())
-    //    {
-    //        Cube->SetMaterial(0, CubeVisualAssetMaterial.Object);
-    //    }
+    { Mesh->SetStaticMesh(KeyVisual.Object); }
     
     BoxCollision = CreateDefaultSubobject<UBoxComponent>(FName("BoxCollision"));
     BoxCollision->SetRelativeScale3D(FVector(4.6, 4.6, 4.6));
@@ -91,35 +73,35 @@ void AKeyPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
         // TODO: Refactor this junk into a for or for-each loop.
         if (bIsEmptyID(Char->GetSlotOneItem()))
         {
-            Char->SetSlotOneItem(KeyID);
+            Char->SetSlotOneItem(StaticConstantNames::KeyID);
             K2_DestroyActor();
         }
         else
         {
             if (bIsEmptyID(Char->GetSlotTwoItem()))
             {
-                Char->SetSlotTwoItem(KeyID);
+                Char->SetSlotTwoItem(StaticConstantNames::KeyID);
                 K2_DestroyActor();
             }
             else
             {
                 if (bIsEmptyID(Char->GetSlotThreeItem()))
                 {
-                    Char->SetSlotThreeItem(KeyID);
+                    Char->SetSlotThreeItem(StaticConstantNames::KeyID);
                     K2_DestroyActor();
                 }
                 else
                 {
                     if (bIsEmptyID(Char->GetSlotFourItem()))
                     {
-                        Char->SetSlotFourItem(KeyID);
+                        Char->SetSlotFourItem(StaticConstantNames::KeyID);
                         K2_DestroyActor();
                     }
                     else
                     {
                         if (bIsEmptyID(Char->GetSlotFiveItem()))
                         {
-                            Char->SetSlotFiveItem(KeyID);
+                            Char->SetSlotFiveItem(StaticConstantNames::KeyID);
                             K2_DestroyActor();
                         }
                         else
@@ -128,7 +110,7 @@ void AKeyPickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
                             // Maybe call a function from SurviorHUDWidget
                             // - to have a string widget appear momentarily.
                             if (GEngine)
-                                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Inventory is Full");
+                            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, "Inventory is Full");
                         }
                     }
                 }

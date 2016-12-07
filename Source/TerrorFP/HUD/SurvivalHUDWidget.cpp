@@ -4,31 +4,8 @@
 #include "../TP_ThirdPerson/TP_ThirdPersonCharacter.h"
 #include "../Game/SurvivalSaveGame.h"
 //#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "../StaticConstantNames.h"
 #include "SurvivalHUDWidget.h"
-
-// TODO: move these to a separate file and include it.
-const int32 EmptyID = 0;     // White
-const int32 WoodID = 1;      // Blue
-const int32 KeyID = 2;       // Purple
-const int32 TinderBoxID = 3; // Green
-
-// TODO: Figure out why this function doesn't work for the progress bar. Make reddit post or ask orfeas
-/*
-float USurvivalHUDWidget::GetPercentHunger()
-{
-    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-    
-    float ReturnValue = 0;
-    
-    if (Char != nullptr)
-    {
-        float CurrentHunger = UKismetMathLibrary::Conv_IntToFloat(Char->GetPlayerHunger());
-        ReturnValue = UKismetMathLibrary::Divide_FloatFloat(CurrentHunger, 100);
-    }
-    return ReturnValue;
-}
-*/
-
 
 
 float USurvivalHUDWidget::GetPercentBattery() const
@@ -48,70 +25,6 @@ float USurvivalHUDWidget::GetPercentBattery() const
     
     return (float)Char->GetPlayerBattery() / 100.0f;
 }
-
-//// Called every frame
-//void USurvivalHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-//{
-//    Super::NativeTick( MyGeometry, InDeltaTime );
-//    
-//    // Prepare delay function variables
-//    FLatentActionInfo LatentActionInfoSlotOne;
-//    LatentActionInfoSlotOne.CallbackTarget = this;
-//    LatentActionInfoSlotOne.ExecutionFunction = "PrepareSlotOneItem";
-//    LatentActionInfoSlotOne.UUID = 1111;
-//    LatentActionInfoSlotOne.Linkage = 0;
-//    
-//    // The delay function call
-//    UKismetSystemLibrary::Delay(this, 0.5, LatentActionInfoSlotOne);
-//
-//}
-//
-//void USurvivalHUDWidget::PrepareSlotOneItem()
-//{
-//    ATP_ThirdPersonCharacter* Char = Cast<ATP_ThirdPersonCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-//    
-//    // Get Item for the upcoming switch
-//    if (!Char) { return; }
-//    int32 Item = Char->GetSlotOneItem();
-//    
-//    // Prepare Image that we will need for setting the brush
-//    // Get a reference to the widget with the name InvSlotOne
-//    UWidget* SlotOneWidget = GetWidgetFromName("InvSlotOne");
-//    // Cast it to an Image we can use
-//    UImage* SlotOneImage = Cast<UImage>(SlotOneWidget);
-//    // Get the Texture for the Image
-//    static ConstructorHelpers::FObjectFinder<UTexture2D>
-//    LogTexture(TEXT("/Game/SurvivalHorrorGame/LogsInvItem"));
-//    
-//    // Change the image
-//    switch (Item)
-//    {
-//        case WoodID:
-//        {
-//            if (LogTexture.Succeeded())
-//            {
-//                SlotOneImage->SetBrushFromTexture(LogTexture.Object);
-//                break;
-//            }
-//        }
-//        default:
-//        {
-//            if (GEngine)
-//                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Failed to set Image1.png");
-//            break;
-//        }
-//    }
-//}
-//
-//void USurvivalHUDWidget::NativeConstruct()
-//{
-//    Super::NativeConstruct();
-//    
-//    UObject* something = StaticLoadObject(UObject::StaticClass(), nullptr, (TEXT("/Game/SurvivalHorrorGame/LogsInvItem")));
-//    
-//    LogTex = Cast<UTexture2D>(something);
-//
-//}
 
 USurvivalHUDWidget::USurvivalHUDWidget(const FObjectInitializer& ObjectInitializer) :
 Super(ObjectInitializer)
@@ -148,30 +61,22 @@ FSlateBrush USurvivalHUDWidget::GetItemOneImage() const
     
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotOneItem();
-
-    // TODO: remove this stuff if it compiles without
-//    // Get a reference to the widget with the name InvSlotOne
-//    UWidget* SlotOneWidget = GetWidgetFromName("InvSlotOne");
-//    
-//    // Cast it to an Image we can use
-//    UImage* SlotOneImage = Cast<UImage>(SlotOneWidget);
-    
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
 
             
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             // TODO: Figure out why this didn't work: SlotOneImage->SetBrushFromTexture(ImageTexture);
             ImageOneBrush.SetResourceObject(WoodImageTexture);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             ImageOneBrush.SetResourceObject(KeyImageTexture);
             break;
@@ -212,27 +117,21 @@ FSlateBrush USurvivalHUDWidget::GetItemTwoImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotTwoItem();
     
-//    // Get a reference to the widget with the name InvSlotOne
-//    UWidget* SlotTwoWidget = GetWidgetFromName("InvSlotTwo");
-//    
-//    // Cast it to an Image we can use
-//    UImage* SlotTwoImage = Cast<UImage>(SlotTwoWidget);
-    
     
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
             
             
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             ImageTwoBrush.SetResourceObject(WoodImageTexture);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             ImageTwoBrush.SetResourceObject(KeyImageTexture);
             break;
@@ -271,27 +170,19 @@ FSlateBrush USurvivalHUDWidget::GetItemThreeImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotThreeItem();
     
-//    // Get a reference to the widget with the name InvSlotOne
-//    UWidget* SlotThreeWidget = GetWidgetFromName("InvSlotThree");
-//    
-//    // Cast it to an Image we can use
-//    UImage* SlotThreeImage = Cast<UImage>(SlotThreeWidget);
-    
-    
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
-            
             
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             ImageThreeBrush.SetResourceObject(WoodImageTexture);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             ImageThreeBrush.SetResourceObject(KeyImageTexture);
             break;
@@ -330,27 +221,19 @@ FSlateBrush USurvivalHUDWidget::GetItemFourImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotFourItem();
     
-//    // Get a reference to the widget with the name InvSlotOne
-//    UWidget* SlotFourWidget = GetWidgetFromName("InvSlotFour");
-//    
-//    // Cast it to an Image we can use
-//    UImage* SlotFourImage = Cast<UImage>(SlotFourWidget);
-    
-    
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
-            
             
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             ImageFourBrush.SetResourceObject(WoodImageTexture);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             ImageFourBrush.SetResourceObject(KeyImageTexture);
             break;
@@ -389,27 +272,19 @@ FSlateBrush USurvivalHUDWidget::GetItemFiveImage() const
     // Get the Item we will use to switch on.
     int32 Item = Char->GetSlotFiveItem();
     
-//    // Get a reference to the widget with the name InvSlotOne
-//    UWidget* SlotFiveWidget = GetWidgetFromName("InvSlotFive");
-//    
-//    // Cast it to an Image we can use
-//    UImage* SlotFiveImage = Cast<UImage>(SlotFiveWidget);
-    
-    
     switch (Item)
     {
-        case EmptyID:
+        case StaticConstantNames::EmptyID:
         {
-            
             
             break;
         }
-        case WoodID:
+        case StaticConstantNames::WoodID:
         {
             ImageFiveBrush.SetResourceObject(WoodImageTexture);
             break;
         }
-        case KeyID:
+        case StaticConstantNames::KeyID:
         {
             ImageFiveBrush.SetResourceObject(KeyImageTexture);
             break;

@@ -7,13 +7,8 @@
 #include "CampfireTriggerVolume.h"
 #include "../HUD/ObjectiveComplete.h" // for obj complete banner
 #include "Matinee/MatineeActor.h"
+#include "../StaticConstantNames.h"
 #include "Kismet/KismetStringLibrary.h"
-
-// TODO: move these to a separate file and include it.
-const int32 EmptyID = 0;     // White
-const int32 WoodID = 1;      // Blue
-const int32 KeyID = 2;       // Purple
-const int32 TinderBoxID = 3; // Green
 
 
 ACampfireTriggerVolume::ACampfireTriggerVolume()
@@ -69,37 +64,37 @@ void ACampfireTriggerVolume::HandlePlayersWood(ATP_ThirdPersonCharacter* Char)
     int32 WoodSubtracted = 0;
     while (WoodSubtracted > -3)
     {
-        if (Char->GetSlotOneItem() == WoodID)
+        if (Char->GetSlotOneItem() == StaticConstantNames::WoodID)
         {
-            Char->SetSlotOneItem(EmptyID);
+            Char->SetSlotOneItem(StaticConstantNames::EmptyID);
             WoodSubtracted--;
         }
         else
         {
-            if (Char->GetSlotTwoItem() == WoodID)
+            if (Char->GetSlotTwoItem() == StaticConstantNames::WoodID)
             {
-                Char->SetSlotTwoItem(EmptyID);
+                Char->SetSlotTwoItem(StaticConstantNames::EmptyID);
                 WoodSubtracted--;
             }
             else
             {
-                if (Char->GetSlotThreeItem() == WoodID)
+                if (Char->GetSlotThreeItem() == StaticConstantNames::WoodID)
                 {
-                    Char->SetSlotThreeItem(EmptyID);
+                    Char->SetSlotThreeItem(StaticConstantNames::EmptyID);
                     WoodSubtracted--;
                 }
                 else
                 {
-                    if (Char->GetSlotFourItem() == WoodID)
+                    if (Char->GetSlotFourItem() == StaticConstantNames::WoodID)
                     {
-                        Char->SetSlotFourItem(EmptyID);
+                        Char->SetSlotFourItem(StaticConstantNames::EmptyID);
                         WoodSubtracted--;
                     }
                     else
                     {
-                        if (Char->GetSlotFiveItem() == WoodID)
+                        if (Char->GetSlotFiveItem() == StaticConstantNames::WoodID)
                         {
-                            Char->SetSlotFiveItem(EmptyID);
+                            Char->SetSlotFiveItem(StaticConstantNames::EmptyID);
                             WoodSubtracted--;
                         }
                         else
