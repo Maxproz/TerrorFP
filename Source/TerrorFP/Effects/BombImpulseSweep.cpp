@@ -33,10 +33,10 @@ void ABombImpulseSweep::BeginPlay()
         
         if (SM)
         {
-            
-            FTransform Transform = SM->GetComponentTransform();
+            // TODO: Why doesnt this detect the transform when we try to spawn sphere sweep with it?
+//            FTransform Transform = GetActorTransform();
             SM->AddRadialImpulse(GetActorLocation(), Radius, Strength, ERadialImpulseFalloff::RIF_Linear, true);
-            GetWorld()->SpawnActor(ASweepSphereActor::StaticClass(), &Transform);
+//            GetWorld()->SpawnActor(ASweepSphereActor::StaticClass(), &Transform);
             
         }
     }
