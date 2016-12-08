@@ -892,4 +892,35 @@ void ATP_ThirdPersonCharacter::MoveRight(float Value)
 	}
 }
 
+void ATP_ThirdPersonCharacter::MoveChosenActorByForce()
+{
+    //Get the static mesh of the chosen Actor
+    UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(ActorToMove->GetRootComponent());
+    
+    //If the static mesh is valid apply the given force
+    if (SM)
+    {
+        /*When you want to apply a force you always need to multiply it's value by the
+         mass of the object that the object is applied to.*/
+        SM->AddForce(ForceToAdd*SM->GetMass());
+    }
+    else GLog->Log("Root component is not a static mesh!");
+}
+
+void ATP_ThirdPersonCharacter::MoveChosenActorByImpulse()
+{
+    //Get the static mesh of the chosen Actor
+    UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(ActorToMove->GetRootComponent());
+    
+    //If the static mesh is valid apply the given impulse
+    if (SM)
+    {
+        /*When you want to apply an impulse you always need to multiply it's value by the
+         mass of the object that the object is applied to.*/
+        SM->AddImpulse(ForceToAdd*SM->GetMass());
+        
+    }
+    else GLog->Log("Root component is not a static mesh!");
+}
+
 

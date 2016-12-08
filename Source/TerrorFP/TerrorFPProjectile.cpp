@@ -4,6 +4,8 @@
 #include "TerrorFPProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
+// TODO: Figure out how to fix the crash on overlap on my other quest objects.
+
 ATerrorFPProjectile::ATerrorFPProjectile() 
 {
 	// Use a sphere as a simple collision representation

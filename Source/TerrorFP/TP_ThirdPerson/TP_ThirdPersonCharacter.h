@@ -253,27 +253,25 @@ public:
     FButtonStyle ButtonStyle;
     
     
-    // Starting Notication Stuff, TODO: Move later
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    UTextBlock* InsText;
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    UImage* FoodImage;
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    UButton* MyClickButton1;
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    UButton* MyClickButton2;
-//    
-//    bool bHasClicked = false;
-//    
-//    UFUNCTION()
-//    void PlayerHasClickedStartingNotification();
-//    
-
-//    
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    UWidget* InsWidget;
-//    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-//    UWidget* FoodWidget;
+    
+    // TODO: Stuff for applying force to actor test, remove later.
+    
+    /*The Actor which will be selected from the Viewport*/
+    UPROPERTY(EditAnywhere, Category = "Physics")
+    AActor* ActorToMove;
+    
+    /*The Force that we're going to apply to the chosen Actor with a default value*/
+    UPROPERTY(EditAnywhere, Category = "Physics")
+    FVector ForceToAdd = FVector(0, 0, 5000);
+    
+    /*The function that applies the above force to the chosen Actor*/
+    UFUNCTION(BlueprintCallable, Category = "Physics")
+    void MoveChosenActorByForce();
+    
+    /*The function that applies the above force to the chosen Actor*/
+    UFUNCTION(BlueprintCallable, Category = "Physics")
+    void MoveChosenActorByImpulse();
+    
     
 protected:
     // TODO: Should these be private? Can they be private?
